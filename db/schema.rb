@@ -11,10 +11,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150902173328) do
+ActiveRecord::Schema.define(version: 20150902183255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "posts", force: :cascade do |t|
+    t.text     "message"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.integer  "author_id"
+    t.string   "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "posts", ["author_id"], name: "index_posts_on_author_id", using: :btree
+  add_index "posts", ["latitude"], name: "index_posts_on_latitude", using: :btree
+  add_index "posts", ["longitude"], name: "index_posts_on_longitude", using: :btree
+
+  create_table "relationships", force: :cascade do |t|
+    t.integer  "follower_id"
+    t.integer  "followed_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "relationships", ["followed_id"], name: "index_relationships_on_followed_id", using: :btree
+  add_index "relationships", ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true, using: :btree
+  add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
+
+  create_table "user_positions", force: :cascade do |t|
+    t.integer  "user_session_id"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "user_positions", ["latitude"], name: "index_user_positions_on_latitude", using: :btree
+  add_index "user_positions", ["longitude"], name: "index_user_positions_on_longitude", using: :btree
+  add_index "user_positions", ["user_session_id"], name: "index_user_positions_on_user_session_id", using: :btree
 
   create_table "user_sessions", force: :cascade do |t|
     t.integer  "user_id"
@@ -38,5 +75,9 @@ ActiveRecord::Schema.define(version: 20150902173328) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "posts", "users", column: "author_id"
+  add_foreign_key "relationships", "users", column: "followed_id"
+  add_foreign_key "relationships", "users", column: "follower_id"
+  add_foreign_key "user_positions", "user_sessions"
   add_foreign_key "user_sessions", "users"
 end
