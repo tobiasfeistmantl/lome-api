@@ -54,6 +54,12 @@ RSpec.describe User, type: :model do
 
 		expect { @user.follower }.not_to raise_error
 		expect { @user.following }.not_to raise_error
+
+		expect { @user.posts }.not_to raise_error
+		expect(@user.posts.class).to be Post::ActiveRecord_Associations_CollectionProxy
+		
+		expect { @user.liked_posts }.not_to raise_error
+		expect(@user.liked_posts.class).to be Like::ActiveRecord_Associations_CollectionProxy
 	end
 
 	it "returns nil for full name because of missing first and lastname" do

@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Post, type: :model do
+
+	before :each do
+		@post = FactoryGirl.build(:post)
+	end
 	
 	describe "create new one" do
-		before :each do
-			@post = FactoryGirl.build(:post)
-		end
 
 		context "with valid data" do
 			it "with every possible attribute" do
@@ -37,6 +38,12 @@ RSpec.describe Post, type: :model do
 				expect(@post).to be_invalid
 			end
 		end
+
+	end
+
+	it "is not raising an error on associations" do
+		expect { @post.likes }.not_to raise_error
+		expect(@post.likes.class).to be Like::ActiveRecord_Associations_CollectionProxy
 
 	end
 

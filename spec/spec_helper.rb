@@ -94,5 +94,6 @@ RSpec.configure do |config|
 
   config.after(:suite) do
     FileUtils.rm_rf(Rails.root.join('public', 'uploads', 'tmp'))
+    FileUtils.rm_rf(Rails.root.join('public', 'uploads', 'test'))
   end
 end

@@ -11,6 +11,7 @@ end
 group :production do
 	gem 'rails_12factor'
 	gem 'newrelic_rpm'
+	gem 'fog-aws'
 end
 
 gem 'rails', '4.2.3'
@@ -22,3 +23,4 @@ gem 'puma'
 gem 'geocoder'
 gem 'will_paginate'
 gem 'carrierwave'
+gem "mini_magick"
