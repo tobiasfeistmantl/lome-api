@@ -1,2 +1,5 @@
 en:
-  
+  activerecord:
+    errors:
+      messages:
+        cannot_be_blank_if_attribute_set: "can't be blank if %{attribute} is set"

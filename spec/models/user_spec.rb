@@ -20,8 +20,35 @@ RSpec.describe User, type: :model do
 		end
 
 		context "with invalid data" do
+			it "with firstname but without lastname" do
+				@user.firstname = "Max"
 
-			it "without email" do
+				expect(@user).to be_invalid
+				expect(@user.errors.messages[:lastname]).to include("can't be blank if Firstname is set")
+			end
+
+			it "with firstname longer than 15 characters" do
+				@user.firstname = "VeryVeryVeryLong"
+
+				expect(@user).to be_invalid
+				expect(@user.errors.messages[:firstname]).to include("is too long (maximum is 15 characters)")
+			end
+
+			it "with lastname but without firstname" do
+				@user.lastname = "Doe"
+
+				expect(@user).to be_invalid
+				expect(@user.errors.messages[:firstname]).to include("can't be blank if Lastname is set")
+			end
+
+			it "with lastname longer than 25 characters" do
+				@user.lastname = "VeryVeryVeryVeryVeryLongLN"
+
+				expect(@user).to be_invalid
+				expect(@user.errors.messages[:lastname]).to include("is too long (maximum is 25 characters)")
+			end
+
+			it "without username" do
 				@user.username = nil
 
 				expect(@user).to be_invalid
@@ -40,6 +67,18 @@ RSpec.describe User, type: :model do
 				@user.password = '123'
 				expect(@user).to be_invalid
 				expect(@user.errors.messages[:password]).to include("is too short (minimum is 7 characters)")
+			end
+
+			it "with invalid email address" do
+				@user.email = "invalid@@email.com"
+
+				expect(@user).to be_invalid
+				expect(@user.errors.messages[:email]).to include("is invalid")
+
+				@user.email = "invalid@email..com"
+
+				expect(@user).to be_invalid
+				expect(@user.errors.messages[:email]).to include("is invalid")
 			end
 		end
 
