@@ -4,7 +4,7 @@ RSpec.describe UserPosition, type: :model do
 	
 	describe "create new one" do
 		before :each do
-			@user_position = FactoryGirl.build(:user_position)
+			@user_position = build(:user_position)
 		end
 	
 		context "with valid data" do

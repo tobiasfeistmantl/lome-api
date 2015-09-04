@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Post, type: :model do
 
 	before :each do
-		@post = FactoryGirl.build(:post)
+		@post = build(:post)
 	end
 	
 	describe "create new one" do
@@ -23,7 +23,7 @@ RSpec.describe Post, type: :model do
 			end
 
 			it "without image but with a message" do
-				@post = FactoryGirl.build(:post, image: nil)
+				@post = build(:post, image: nil)
 
 				expect(@post).to be_valid
 				expect(@post.image.url).to be_nil
@@ -33,7 +33,7 @@ RSpec.describe Post, type: :model do
 
 		context "with invalid data" do
 			it "without both message and image" do
-				@post = FactoryGirl.build(:post, message: nil, image: nil)
+				@post = build(:post, message: nil, image: nil)
 
 				expect(@post).to be_invalid
 			end

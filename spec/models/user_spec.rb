@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
 	before :each do
-		@user = FactoryGirl.build(:user, firstname: nil, lastname: nil, email: nil)
+		@user = build(:user, firstname: nil, lastname: nil, email: nil)
 	end
 
 	describe "create new one" do
@@ -13,7 +13,7 @@ RSpec.describe User, type: :model do
 			end
 
 			it "with all data" do
-				@user = FactoryGirl.build(:user)
+				@user = build(:user)
 
 				expect(@user).to be_valid
 			end
@@ -106,7 +106,7 @@ RSpec.describe User, type: :model do
 	end
 
 	it "returns the full name as string" do
-		@user = FactoryGirl.build(:user)
+		@user = build(:user)
 
 		expect(@user.name).to eq("#{@user.firstname} #{@user.lastname}")
 	end

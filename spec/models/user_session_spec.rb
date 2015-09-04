@@ -4,7 +4,7 @@ RSpec.describe UserSession, type: :model do
 
   describe "create new one" do
     before(:each) do
-    	@user_session = FactoryGirl.build(:user_session)
+    	@user_session = build(:user_session)
     end
 
     context "with valid data" do
@@ -26,7 +26,7 @@ RSpec.describe UserSession, type: :model do
     end
 
     it "generates a session token" do
-      @user_session = FactoryGirl.build(:user_session, token: nil)
+      @user_session = build(:user_session, token: nil)
 
       token = @user_session.generate_token
 

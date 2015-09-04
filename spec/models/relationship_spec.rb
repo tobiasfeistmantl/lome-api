@@ -4,7 +4,7 @@ RSpec.describe Relationship, type: :model do
 	
 	describe "create new one" do
 		before :each do
-			@relation = FactoryGirl.build(:relationship)
+			@relation = build(:relationship)
 		end
 
 		context "with valid data" do

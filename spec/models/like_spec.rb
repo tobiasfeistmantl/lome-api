@@ -4,7 +4,7 @@ RSpec.describe Like, type: :model do
 	
 	describe "create new one" do
 		before :each do
-			@like = FactoryGirl.build(:like)
+			@like = build(:like)
 		end
 
 		context "with valid data" do
