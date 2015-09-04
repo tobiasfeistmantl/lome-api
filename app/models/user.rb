@@ -3,6 +3,12 @@ class User < ActiveRecord::Base
 
 	has_secure_password
 
+	before_validation { firstname.strip! if firstname? }
+	before_validation { lastname.strip! if lastname? }
+	before_validation { self.email = email.strip.downcase if email? }
+	
+	before_save { username.strip! }
+
 	has_many :sessions, class_name: "UserSession", dependent: :destroy
 	has_many :positions, through: :sessions
 
@@ -27,9 +33,9 @@ class User < ActiveRecord::Base
 		message: I18n.t('activerecord.errors.messages.cannot_be_blank_if_attribute_set', attribute: User.human_attribute_name("firstname"))
 	}, if: :firstname?
 
-	validates :username, presence: true
+	validates :username, presence: true, uniqueness: { case_sensitive: false }
 	validates :password, length: { minimum: 7 }
-	validates :email, format: { with: EMAIL_REGEX }, if: :email?
+	validates :email, format: { with: EMAIL_REGEX }, uniqueness: { case_sensitive: false }, if: :email?
 
 	def name
 		[firstname, lastname].join(" ") if firstname.present? && lastname.present?

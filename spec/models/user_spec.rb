@@ -111,9 +111,29 @@ RSpec.describe User, type: :model do
 		expect(@user.name).to eq("#{@user.firstname} #{@user.lastname}")
 	end
 
-	
+	it "is an email with all lowercased letters" do
+		@user = build(:user, email: FFaker::Internet::email.upcase)
+		@user.valid?
+		expect(@user.email).to eq(@user.email.downcase)
+	end
 
-	it "is deleting depending objects if the it will be destroyed"
+	it "is not saving duplicate usernames" do
+		@user.save
+
+		@duplicate_user = build(:user, username: @user.username.upcase)
+		@duplicate_user.valid?
+
+		expect(@duplicate_user.errors.messages[:username]).to include("has already been taken")
+	end
+
+	it "is not saving duplicate email addresses" do
+		@user = create(:user)
+
+		@duplicate_user = build(:user, email: @user.email)
+		@duplicate_user.valid?
+
+		expect(@duplicate_user.errors.messages[:email]).to include("has already been taken")
+	end
 end
 
 

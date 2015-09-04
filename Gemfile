@@ -6,6 +6,7 @@ group :development, :test do
 	gem 'rspec-rails'
 	gem 'factory_girl_rails'
 	gem 'guard-rspec', require: false
+	gem 'ffaker'
 end
 
 group :production do
