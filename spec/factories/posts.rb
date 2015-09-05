@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :post do
-    message "MyText"
+    message { FFaker::Lorem::paragraph }
 	latitude 47.358500
 	longitude 11.703402
 	association :author, factory: :user

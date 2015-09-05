@@ -1,50 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe Post, type: :model do
+	subject { build(:post) }
 
-	before :each do
-		@post = build(:post)
-	end
+	it { is_expected.to be_valid }
+
+	it { is_expected.to belong_to(:author) }
+	it { is_expected.to have_many(:likes).dependent(:destroy) }
 	
-	describe "create new one" do
-
-		context "with valid data" do
-			it "with every possible attribute" do
-				expect(@post).to be_valid
-				expect(@post.image.class).to be PostImageUploader
-			end
-		
-			it "without a message but with image" do
-				@post.message = nil
-
-				expect(@post).to be_valid
-				expect(@post.image.class).to be PostImageUploader
-				expect(@post.message).to be_nil
-			end
-
-			it "without image but with a message" do
-				@post = build(:post, image: nil)
-
-				expect(@post).to be_valid
-				expect(@post.image.url).to be_nil
-				expect(@post.message).to_not be_nil
-			end
-		end
-
-		context "with invalid data" do
-			it "without both message and image" do
-				@post = build(:post, message: nil, image: nil)
-
-				expect(@post).to be_invalid
-			end
-		end
-
+	context "without message" do
+		subject { build(:post, message: nil) }
+		it { is_expected.to be_valid }
 	end
 
-	it "is not raising an error on associations" do
-		expect { @post.likes }.not_to raise_error
-		expect(@post.likes.class).to be Like::ActiveRecord_Associations_CollectionProxy
-
+	context "without image" do
+		subject { build(:post, image: nil) }
+		it { is_expected.to be_valid }
 	end
 
+	context "without message and image" do
+		subject { build(:post, message: nil, image: nil) }
+		it { is_expected.to be_invalid }
+	end
 end

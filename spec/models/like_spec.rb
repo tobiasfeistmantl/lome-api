@@ -1,34 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Like, type: :model do
-	
-	describe "create new one" do
-		before :each do
-			@like = build(:like)
-		end
+	subject { build(:like) }
 
-		context "with valid data" do
-			it "with all required data" do
-				expect(@like).to be_valid
-			end
-		end
+	it { is_expected.to be_valid }
 
-		context "with invalid data" do
-			it "without a post" do
-				@like.post = nil
+	it { is_expected.to belong_to :post }
+	it { is_expected.to belong_to :user }
 
-				expect(@like).to be_invalid
-				expect(@like.errors.messages[:post]).to include("can't be blank")
-			end
-
-			it "without a user" do
-				@like.user = nil
-
-				expect(@like).to be_invalid
-				expect(@like.errors.messages[:user]).to include("can't be blank")
-			end
-		end
-	end
-
-	
+	it { is_expected.to validate_presence_of :post }
+	it { is_expected.to validate_presence_of :user }
 end

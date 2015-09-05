@@ -1,29 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Relationship, type: :model do
+	subject { build(:relationship) }
 	
-	describe "create new one" do
-		before :each do
-			@relation = build(:relationship)
-		end
+	it { is_expected.to be_valid }
 
-		context "with valid data" do
-			it "is a valid relation" do
-				expect(@relation).to be_valid
-			end
+	it { is_expected.to belong_to :follower }
+	it { is_expected.to belong_to :followed }
 
-		end
-
-		context "with invalid data" do
-			it "without follower and followed ID" do
-				@relation.follower = nil
-				@relation.followed = nil
-
-				expect(@relation).to be_invalid
-				expect(@relation.errors.messages[:follower]).to include("can't be blank")
-				expect(@relation.errors.messages[:followed]).to include("can't be blank")
-			end
-
-		end
-	end
+	it { is_expected.to validate_presence_of :follower }
+	it { is_expected.to validate_presence_of :followed }
 end

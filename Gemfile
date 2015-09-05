@@ -7,6 +7,7 @@ group :development, :test do
 	gem 'factory_girl_rails'
 	gem 'guard-rspec', require: false
 	gem 'ffaker'
+	gem 'shoulda-matchers'
 end
 
 group :production do

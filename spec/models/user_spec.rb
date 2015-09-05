@@ -1,138 +1,59 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-	before :each do
-		@user = build(:user, firstname: nil, lastname: nil, email: nil)
+	subject { build(:user) }
+
+	it { is_expected.to be_valid }
+
+	it { is_expected.to have_secure_password }
+	it { is_expected.to validate_length_of(:firstname).is_at_most(15) }
+	it { is_expected.to validate_length_of(:lastname).is_at_most(25) }
+	it { is_expected.to validate_length_of(:password).is_at_least(7) }
+	it { is_expected.to validate_presence_of :username }
+	it { is_expected.to validate_uniqueness_of(:username).case_insensitive }
+	it { is_expected.to validate_uniqueness_of(:email).case_insensitive }
+
+	it { is_expected.to have_db_index(:username) }
+	it { is_expected.to have_db_index(:email) }
+
+	it { is_expected.to allow_value(FFaker::Internet.email).for(:email) }
+	it { is_expected.to_not allow_value('invalid@@email.com').for(:email) }
+	it { is_expected.to_not allow_value('invalid@email..com').for(:email) }
+
+	it { is_expected.to have_many(:sessions).dependent(:destroy) }
+	it { is_expected.to have_many(:positions).dependent(:destroy) }
+	it { is_expected.to have_many(:active_relationships).dependent(:destroy) }
+	it { is_expected.to have_many(:follower) }
+	it { is_expected.to have_many(:passive_relationships).dependent(:destroy) }
+	it { is_expected.to have_many(:following) }
+	it { is_expected.to have_many(:posts).dependent(:destroy) }
+	it { is_expected.to have_many(:liked_posts) }
+
+
+	context "with firstname validation" do
+		before { allow(subject).to receive(:lastname?) { true } }
+		it { is_expected.to validate_presence_of(:firstname).with_message("can't be blank if Lastname is set") }
 	end
 
-	describe "create new one" do
-		
-		context "with valid data" do
-			it "with minimum data" do
-				expect(@user).to be_valid
-			end
-
-			it "with all data" do
-				@user = build(:user)
-
-				expect(@user).to be_valid
-			end
-		end
-
-		context "with invalid data" do
-			it "with firstname but without lastname" do
-				@user.firstname = "Max"
-
-				expect(@user).to be_invalid
-				expect(@user.errors.messages[:lastname]).to include("can't be blank if Firstname is set")
-			end
-
-			it "with firstname longer than 15 characters" do
-				@user.firstname = "VeryVeryVeryLong"
-
-				expect(@user).to be_invalid
-				expect(@user.errors.messages[:firstname]).to include("is too long (maximum is 15 characters)")
-			end
-
-			it "with lastname but without firstname" do
-				@user.lastname = "Doe"
-
-				expect(@user).to be_invalid
-				expect(@user.errors.messages[:firstname]).to include("can't be blank if Lastname is set")
-			end
-
-			it "with lastname longer than 25 characters" do
-				@user.lastname = "VeryVeryVeryVeryVeryLongLN"
-
-				expect(@user).to be_invalid
-				expect(@user.errors.messages[:lastname]).to include("is too long (maximum is 25 characters)")
-			end
-
-			it "without username" do
-				@user.username = nil
-
-				expect(@user).to be_invalid
-			end
-
-			it "without password" do
-				@user.password = nil
-
-				expect(@user).to be_invalid
-			end
-
-			it "with a password shorter than 7 characters" do
-				@user.password = '123admin'
-				expect(@user).to be_valid
-
-				@user.password = '123'
-				expect(@user).to be_invalid
-				expect(@user.errors.messages[:password]).to include("is too short (minimum is 7 characters)")
-			end
-
-			it "with invalid email address" do
-				@user.email = "invalid@@email.com"
-
-				expect(@user).to be_invalid
-				expect(@user.errors.messages[:email]).to include("is invalid")
-
-				@user.email = "invalid@email..com"
-
-				expect(@user).to be_invalid
-				expect(@user.errors.messages[:email]).to include("is invalid")
-			end
-		end
-
-	end
-
-	it "is not raising an error on associations" do
-		expect { @user.sessions }.not_to raise_error
-		expect(@user.sessions.class).to be UserSession::ActiveRecord_Associations_CollectionProxy
-
-		expect { @user.positions }.not_to raise_error
-		expect(@user.positions.class).to be UserPosition::ActiveRecord_Associations_CollectionProxy
-
-		expect { @user.follower }.not_to raise_error
-		expect { @user.following }.not_to raise_error
-
-		expect { @user.posts }.not_to raise_error
-		expect(@user.posts.class).to be Post::ActiveRecord_Associations_CollectionProxy
-		
-		expect { @user.liked_posts }.not_to raise_error
-		expect(@user.liked_posts.class).to be Like::ActiveRecord_Associations_CollectionProxy
+	context "with lastname validation" do
+		before { allow(subject).to receive(:firstname?) { true } }
+		it { is_expected.to validate_presence_of(:lastname).with_message("can't be blank if Firstname is set") }
 	end
 
 	it "returns nil for full name because of missing first and lastname" do
-		expect(@user.name).to be_nil
+		subject.firstname = nil
+		subject.lastname = nil
+		expect(subject.name).to be_nil
 	end
 
 	it "returns the full name as string" do
-		@user = build(:user)
-
-		expect(@user.name).to eq("#{@user.firstname} #{@user.lastname}")
+		expect(subject.name).to eq("#{subject.firstname} #{subject.lastname}")
 	end
 
 	it "is an email with all lowercased letters" do
-		@user = build(:user, email: FFaker::Internet::email.upcase)
-		@user.valid?
-		expect(@user.email).to eq(@user.email.downcase)
-	end
-
-	it "is not saving duplicate usernames" do
-		@user.save
-
-		@duplicate_user = build(:user, username: @user.username.upcase)
-		@duplicate_user.valid?
-
-		expect(@duplicate_user.errors.messages[:username]).to include("has already been taken")
-	end
-
-	it "is not saving duplicate email addresses" do
-		@user = create(:user)
-
-		@duplicate_user = build(:user, email: @user.email)
-		@duplicate_user.valid?
-
-		expect(@duplicate_user.errors.messages[:email]).to include("has already been taken")
+		subject.email.upcase!
+		subject.valid?
+		expect(subject.email).to eq(subject.email.downcase)
 	end
 end
 
