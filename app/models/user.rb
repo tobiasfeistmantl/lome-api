@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+	USERNAME_REGEX = /\A(?![-_.])(?!.*[-_.]{2})[a-zA-Z0-9._-]+(?<![-_.])\z/
 	EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 
 	has_secure_password
@@ -33,7 +34,10 @@ class User < ActiveRecord::Base
 		message: I18n.t('activerecord.errors.messages.cannot_be_blank_if_attribute_set', attribute: User.human_attribute_name("firstname"))
 	}, if: :firstname?
 
-	validates :username, presence: true, uniqueness: { case_sensitive: false }
+	validates :username, presence: true,
+		uniqueness: { case_sensitive: false },
+		format: { with: USERNAME_REGEX },
+		length: { maximum: 30 }
 	validates :password, length: { minimum: 7 }
 	validates :email, format: { with: EMAIL_REGEX }, uniqueness: { case_sensitive: false }
 

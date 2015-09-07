@@ -8,6 +8,7 @@ RSpec.describe User, type: :model do
 	it { is_expected.to have_secure_password }
 	it { is_expected.to validate_length_of(:firstname).is_at_most(15) }
 	it { is_expected.to validate_length_of(:lastname).is_at_most(25) }
+	it { is_expected.to validate_length_of(:username).is_at_most(30) }
 	it { is_expected.to validate_length_of(:password).is_at_least(7) }
 	it { is_expected.to validate_presence_of :username }
 	it { is_expected.to validate_uniqueness_of(:username).case_insensitive }
@@ -19,6 +20,12 @@ RSpec.describe User, type: :model do
 	it { is_expected.to allow_value(FFaker::Internet.email).for(:email) }
 	it { is_expected.to_not allow_value('invalid@@email.com').for(:email) }
 	it { is_expected.to_not allow_value('invalid@email..com').for(:email) }
+
+	it { is_expected.to allow_value(FFaker::Internet.user_name).for(:username) }
+	it { is_expected.to_not allow_value("invalid__username").for(:username) }
+	it { is_expected.to_not allow_value("invalid.-username").for(:username) }
+	it { is_expected.to_not allow_value("invalid.username.").for(:username) }
+	it { is_expected.to_not allow_value("-invalid.username").for(:username) }
 
 	it { is_expected.to have_many(:sessions).dependent(:destroy) }
 	it { is_expected.to have_many(:positions).dependent(:destroy) }
