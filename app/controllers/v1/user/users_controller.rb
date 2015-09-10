@@ -47,6 +47,9 @@ class V1::User::UsersController < V1::User::Base
 		end
 	end
 
+	def destroy
+	end
+
 	private
 
 	def user_create_params

@@ -10,7 +10,7 @@ RSpec.describe "Users Resource", type: :request do
 			get "/v1/users", { sid: user_session.id }, { "Authorization" => "Token token=#{user_session.token}" }
 
 			expect(response).to have_http_status(200)
-			expect(json[0]).to include("id", "firstname", "lastname", "username")
+			expect(json[0]).to include("id", "firstname", "lastname", "username", "profile_image")
 		end
 		
 		it "lists users with a username search condition" do
@@ -21,6 +21,7 @@ RSpec.describe "Users Resource", type: :request do
 
 			expect(response).to have_http_status(200)
 			expect(json[0]).to include("id" => random_user.id, "username" => random_user.username)
+			expect(json[0]["profile_image"]).to include("full", "profile", "thumb")
 		end
 	end
 
@@ -40,7 +41,7 @@ RSpec.describe "Users Resource", type: :request do
 			get "/v1/users/#{other_user.id}", { sid: user_session.id }, { "Authorization" => "Token token=#{user_session.token}" }
 
 			expect(response).to have_http_status(200)
-			expect(json).to include("id", "firstname", "lastname", "username")
+			expect(json).to include("id", "firstname", "lastname", "username", "profile_image")
 			expect(json).to_not include("email")
 		end
 	end

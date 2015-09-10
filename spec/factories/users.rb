@@ -5,6 +5,7 @@ FactoryGirl.define do
 	username { FFaker::Internet::user_name }
 	password "123admin"
 	email { FFaker::Internet::email }
+	profile_image { File.open("#{ENV["HOME"]}/Developer/web/test/test-image.jpeg") }
   end
 
 end

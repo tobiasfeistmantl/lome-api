@@ -1,5 +1,1 @@
-json.array! @users do |user|
-
-	json.extract! user, :id, :firstname, :lastname, :username
-
-end
+json.partial! 'attributes', collection: @users, as: :user

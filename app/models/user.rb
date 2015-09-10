@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
 
 	has_secure_password
 
+	mount_uploader :profile_image, UserProfileImageUploader
+
 	before_save { firstname.strip! if firstname? }
 	before_save { lastname.strip! if lastname? }
 	before_validation { self.email = email.strip.downcase if email? }
