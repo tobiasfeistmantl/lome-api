@@ -85,4 +85,33 @@ RSpec.describe V1::User::UsersController, type: :controller do
 			it { expect(response).to render_template(:update) }
 		end
 	end
+
+	describe "DELETE #destroy" do
+		context "without user session" do
+			before { delete :destroy, id: user, format: :json }
+			it { expect(response).to require_user_session }
+		end
+
+		context "with another user session" do
+			before :each do
+				another_user = FactoryGirl.create(:user)
+				allow(controller).to receive(:current_user).and_return(another_user)
+				delete :destroy, id: user, format: :json
+			end
+
+			it { expect(response).to require_authorization }
+		end
+
+		context "with user session" do
+			before :each do
+				allow(controller).to receive(:current_user).and_return(user)
+			end
+
+			it "deletes the user from database" do
+				expect {
+					delete :destroy, id: user, format: :json
+				}.to change(User, :count).by(-1)
+			end
+		end
+	end
 end

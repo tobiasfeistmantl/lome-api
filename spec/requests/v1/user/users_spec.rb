@@ -25,6 +25,17 @@ RSpec.describe "Users Resource", type: :request do
 		end
 	end
 
+	describe "create new user" do
+		let(:user) { attributes_for(:user) }
+
+		it "creates a valid new user" do
+			post "/v1/users", { user: user }
+
+			expect(response).to have_http_status(201)
+			expect(User.find_by(email: user[:email])).to_not be_nil
+		end
+	end
+
 	describe "show user" do
 		it "requests the user of the session" do
 			user = user_session.user
@@ -33,6 +44,7 @@ RSpec.describe "Users Resource", type: :request do
 
 			expect(response).to have_http_status(200)
 			expect(json).to include("id" => user.id, "firstname" => user.firstname, "lastname" => user.lastname, "username" => user.username, "email" => user.email)
+			expect(json).to include("profile_image")
 		end
 
 		it "requests another user" do
@@ -43,6 +55,28 @@ RSpec.describe "Users Resource", type: :request do
 			expect(response).to have_http_status(200)
 			expect(json).to include("id", "firstname", "lastname", "username", "profile_image")
 			expect(json).to_not include("email")
+		end
+	end
+
+	describe "update user" do
+		it "updates an existent user" do
+			user = user_session.user
+			user_attributes = attributes_for(:user)
+
+			patch "/v1/users/#{user.id}", { sid: user_session.id, user: user_attributes }, { "Authorization" => "Token token=#{user_session.token}" }
+
+			expect(response).to have_http_status(200)
+			expect(json).to include("id" => user.id, "firstname" => user_attributes[:firstname], "lastname" => user_attributes[:lastname], "email" => user_attributes[:email])
+		end
+	end
+
+	describe "delete user" do
+		it "deletes an existent user" do
+			user = user_session.user
+
+			delete "/v1/users/#{user.id}", { sid: user_session.id }, { "Authorization" => "Token token=#{user_session.token}" }
+
+			expect(response).to have_http_status(204)
 		end
 	end
 

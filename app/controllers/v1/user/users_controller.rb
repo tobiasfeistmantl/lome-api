@@ -1,6 +1,6 @@
 class V1::User::UsersController < V1::User::Base
 	skip_before_action :set_user, only: [:index, :create]
-	skip_before_action :authenticate_user!, only: :create
+	skip_before_action :authenticate_user!, only: [:create]
 	skip_before_action :authorize_user!, only: [:index, :show, :create]
 
 	def index
@@ -48,6 +48,21 @@ class V1::User::UsersController < V1::User::Base
 	end
 
 	def destroy
+		if @user.destroy
+			render nothing: true, status: 204
+		else
+			render "v1/errors/default",
+			locals: {
+				error: {
+					type: "UNABLE_TO_DESTROY_USER",
+					specific: @user.errors.messages,
+					message: {
+						user: "Unable to delete user",
+						language: I18n.locale
+					}
+				}
+			}, status: 500
+		end
 	end
 
 	private
