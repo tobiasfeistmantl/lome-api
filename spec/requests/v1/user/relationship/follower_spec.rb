@@ -3,9 +3,8 @@ require 'rails_helper'
 RSpec.describe "User Follower Resource", type: :request do
 	let(:user_session) { create(:user_session) }
 	let(:user) { user_session.user }
-	let(:relationships) { create_list(:relationship, 50, followed: user) }
 
-	before { relationships }
+	before { create_list(:relationship, 50, followed: user) }
 
 	describe "GET /user/:user_id/follower" do
 		it "returns the 25 first follower" do

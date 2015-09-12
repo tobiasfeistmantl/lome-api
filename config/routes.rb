@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 			delete "relationships" => "relationship/relationships#destroy", as: :relationship
 
 			get 'follower' => "relationship/follower#index", as: :follower
+			get 'followed' => "relationship/followed#index", as: :followed
 		end
 
 		post "users/sessions" => "user/sessions#create", as: :user_sessions
