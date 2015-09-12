@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe V1::User::SessionsController, type: :controller do
-	let(:user_session) { create(:user_session) }
-	let(:user) { user_session.user }
-
 	it { is_expected.to use_before_action :set_user }
 	it { is_expected.to use_before_action :authenticate_user! }
 	it { is_expected.to use_before_action :authorize_user! }

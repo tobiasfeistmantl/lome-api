@@ -6,7 +6,9 @@ class V1::User::SessionsController < V1::User::Base
 	before_action :set_user_session, only: [:show, :destroy]
 
 	def create
-		if @user_session.create
+		@user_session = @user.sessions.new
+
+		if @user_session.save
 			render 'create', status: 201, location: v1_user_session_url(@user, @user_session)
 		else
 			render "v1/errors/default",
