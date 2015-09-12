@@ -1,4 +1,6 @@
 class UserSession < ActiveRecord::Base
+	before_save { generate_token if new_record? }
+
 	belongs_to :user
 	
 	has_many :positions, class_name: "UserPosition", dependent: :destroy

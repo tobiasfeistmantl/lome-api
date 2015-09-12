@@ -1,23 +1,23 @@
 require 'rails_helper'
 
-RSpec.describe "Users Resource", type: :request do
+RSpec.describe "User Resource", type: :request do
 	let(:user_session) { create(:user_session) }
 
-	describe "search for users" do
-		it "lists users without a search condition" do
+	describe "GET /users" do
+		it "returns all users without a search condition" do
 			create_list(:user, 20)
 
-			get "/v1/users", { sid: user_session.id }, { "Authorization" => "Token token=#{user_session.token}" }
+			request_with_user_session :get, "/v1/users", user_session
 
 			expect(response).to have_http_status(200)
 			expect(json[0]).to include("id", "firstname", "lastname", "username", "profile_image")
 		end
 		
-		it "lists users with a username search condition" do
+		it "returns all users with a username search condition" do
 			users = create_list(:user, 20)
 			random_user = users[Random.rand(20)]
 
-			get "/v1/users", { sid: user_session.id, q: random_user.username }, { "Authorization" => "Token token=#{user_session.token}" }
+			request_with_user_session :get, "/v1/users", user_session, { q: random_user.username }
 
 			expect(response).to have_http_status(200)
 			expect(json[0]).to include("id" => random_user.id, "username" => random_user.username)
@@ -25,10 +25,10 @@ RSpec.describe "Users Resource", type: :request do
 		end
 	end
 
-	describe "create new user" do
+	describe "POST /users" do
 		let(:user) { attributes_for(:user) }
 
-		it "creates a valid new user" do
+		it "creates a valid user" do
 			post "/v1/users", { user: user }
 
 			expect(response).to have_http_status(201)
@@ -36,21 +36,21 @@ RSpec.describe "Users Resource", type: :request do
 		end
 	end
 
-	describe "show user" do
-		it "requests the user of the session" do
+	describe "GET /users/:id" do
+		it "returns the sessions user" do
 			user = user_session.user
 
-			get "/v1/users/#{user.id}", { sid: user_session.id }, { "Authorization" => "Token token=#{user_session.token}" }
+			request_with_user_session :get, "/v1/users/#{user.id}", user_session
 
 			expect(response).to have_http_status(200)
 			expect(json).to include("id" => user.id, "firstname" => user.firstname, "lastname" => user.lastname, "username" => user.username, "email" => user.email)
 			expect(json).to include("profile_image")
 		end
 
-		it "requests another user" do
+		it "returns another user than the sessions user" do
 			other_user = create(:user)
 
-			get "/v1/users/#{other_user.id}", { sid: user_session.id }, { "Authorization" => "Token token=#{user_session.token}" }
+			request_with_user_session :get, "/v1/users/#{other_user.id}", user_session
 
 			expect(response).to have_http_status(200)
 			expect(json).to include("id", "firstname", "lastname", "username", "profile_image")
@@ -58,23 +58,24 @@ RSpec.describe "Users Resource", type: :request do
 		end
 	end
 
-	describe "update user" do
-		it "updates an existent user" do
+	describe "PATCH /users/:id" do
+		it "updates an user" do
 			user = user_session.user
 			user_attributes = attributes_for(:user)
 
-			patch "/v1/users/#{user.id}", { sid: user_session.id, user: user_attributes }, { "Authorization" => "Token token=#{user_session.token}" }
+			request_with_user_session :patch, "/v1/users/#{user.id}", user_session, { user: user_attributes }
 
 			expect(response).to have_http_status(200)
 			expect(json).to include("id" => user.id, "firstname" => user_attributes[:firstname], "lastname" => user_attributes[:lastname], "email" => user_attributes[:email])
+			expect(json).to include("profile_image")
 		end
 	end
 
-	describe "delete user" do
-		it "deletes an existent user" do
+	describe "DELETE /users/:id" do
+		it "deletes an user" do
 			user = user_session.user
 
-			delete "/v1/users/#{user.id}", { sid: user_session.id }, { "Authorization" => "Token token=#{user_session.token}" }
+			request_with_user_session :delete, "/v1/users/#{user.id}", user_session
 
 			expect(response).to have_http_status(204)
 		end

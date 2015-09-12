@@ -9,23 +9,29 @@ RSpec.describe V1::User::UsersController, type: :controller do
 
 	describe "GET #index" do
 		context "without user session" do
-			before { get :index, format: :json }
-			it { expect(response).to require_user_session }
+			before { get :index }
+			it "returns a require user session error" do
+				expect(response).to require_user_session
+			end
 		end
 
-		context "with user session" do
+		context "with valid user session" do
+			before(:all) { create_list(:user, 30) }
 			before { allow(controller).to receive(:current_user).and_return(user) }
 
 			context "without search param" do
 				before { get :index, format: :json }
-				it { expect(assigns(:users)).to_not be_nil }
+
+				it "returns the first 25 users" do
+					expect(assigns(:users)).to match_array(User.order(:username).limit(25))
+				end
 			end
 
 			context "with search param" do
 				before { get :index, q: user.username, format: :json }
 
-				it "includes user" do
-					expect(assigns(:users)).to include(user)
+				it "returns only the searched user" do
+					expect(assigns(:users)).to eq([user])
 				end
 			end
 		end
@@ -34,10 +40,17 @@ RSpec.describe V1::User::UsersController, type: :controller do
 	describe "POST #create" do
 		context "with valid attributes" do
 			before { post :create, user: attributes_for(:user), format: :json }
-			it { expect(response).to_not require_user_session }
+
+			it "requires no user session" do
+				expect(response).to_not require_user_session
+			end
+
+			it "assigns @user" do
+				expect(assigns(:user)).to_not be_nil
+			end
 		end
 
-		it "creates a new record in database" do
+		it "creates a new user in the database" do
 			expect {
 				post :create, user: attributes_for(:user), format: :json
 			}.to change(User, :count).by(1)
@@ -47,25 +60,33 @@ RSpec.describe V1::User::UsersController, type: :controller do
 	describe "GET #show" do
 		context "without user session" do
 			before { get :show, id: user, format: :json }
-			it { expect(response).to require_user_session } 
+
+			it "returns a require user session error" do
+				expect(response).to require_user_session
+			end
 		end
 
-		context "with user session" do
+		context "with valid user session" do
 			before { allow(controller).to receive(:current_user).and_return(user) }
 
-			context "with non-existent user" do
+			context "request non-existent user" do
 				before { get :show, id: "1254123123", format: :json }
-				it { expect(response).to render_default_error_template }
+
+				it "returns a not found error" do
+					expect(response).to render_default_error_template
+				end
 			end
 
-			context "with existent user" do
+			context "request existent user" do
 				before { get :show, id: user, format: :json }
 
 				it "assigns the requested user to @user" do
 					expect(assigns(:user)).to eq(user)
 				end
 
-				it { expect(response).to render_template(:show) }
+				it "returns the show template" do
+					expect(response).to render_template(:show)
+				end
 			end
 		end
 	end
@@ -73,39 +94,56 @@ RSpec.describe V1::User::UsersController, type: :controller do
 	describe "PATCH #update" do
 		context "without user session" do
 			before { patch :update, id: user, user: attributes_for(:user), format: :json }
-			it { expect(response).to require_user_session }
+			
+			it "returns a require user session error" do
+				expect(response).to require_user_session
+			end
 		end
 
-		context "with user session" do
+		context "with valid user session" do
 			before :each do
 				allow(controller).to receive(:current_user).and_return(user)
 				patch :update, id: user, user: attributes_for(:user), format: :json
 			end
 
-			it { expect(response).to render_template(:update) }
+			it "assigns @user" do
+				expect(assigns(:user)).to eq(user)
+			end
+
+			it "returns the update template" do
+				expect(response).to render_template(:update)
+			end
 		end
 	end
 
 	describe "DELETE #destroy" do
 		context "without user session" do
 			before { delete :destroy, id: user, format: :json }
-			it { expect(response).to require_user_session }
+
+			it "returns a require user session error" do
+				expect(response).to require_user_session
+			end
 		end
 
 		context "with another user session" do
-			before :each do
-				another_user = FactoryGirl.create(:user)
-				allow(controller).to receive(:current_user).and_return(another_user)
+			let(:another_user) { create(:user) }
+			before { allow(controller).to receive(:current_user).and_return(another_user) }
+
+			it "returns a require authorization error" do
 				delete :destroy, id: user, format: :json
+
+				expect(response).to require_authorization
 			end
 
-			it { expect(response).to require_authorization }
+			it "does not delete the user from database" do
+				expect {
+					delete :destroy, id: :user, format: :json
+				}.to change(User, :count).by(0)
+			end
 		end
 
-		context "with user session" do
-			before :each do
-				allow(controller).to receive(:current_user).and_return(user)
-			end
+		context "with own user session" do
+			before { allow(controller).to receive(:current_user).and_return(user) }
 
 			it "deletes the user from database" do
 				expect {

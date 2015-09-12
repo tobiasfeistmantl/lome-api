@@ -8,6 +8,7 @@ group :development, :test do
 	gem 'guard-rspec', require: false
 	gem 'ffaker'
 	gem 'shoulda-matchers'
+	gem 'database_cleaner'
 end
 
 group :production do

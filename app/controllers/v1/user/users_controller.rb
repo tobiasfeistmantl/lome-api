@@ -4,7 +4,7 @@ class V1::User::UsersController < V1::User::Base
 	skip_before_action :authorize_user!, only: [:index, :show, :create]
 
 	def index
-		@users = User.where("username ILIKE ?", "%#{params[:q]}%").paginate(page: params[:page])
+		@users = User.search_by_username(params[:q]).paginate(page: params[:page])
 	end
 
 	def create
@@ -39,8 +39,7 @@ class V1::User::UsersController < V1::User::Base
 					type: "UNABLE_TO_UPDATE_USER",
 					specific: @user.errors.messages,
 					message: {
-						user: "Unable to update user",
-						language: I18n.locale
+						user: "Unable to update user"
 					}
 				}
 			}, status: 400
@@ -57,8 +56,7 @@ class V1::User::UsersController < V1::User::Base
 					type: "UNABLE_TO_DESTROY_USER",
 					specific: @user.errors.messages,
 					message: {
-						user: "Unable to delete user",
-						language: I18n.locale
+						user: "Unable to delete user"
 					}
 				}
 			}, status: 500

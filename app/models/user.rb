@@ -9,8 +9,6 @@ class User < ActiveRecord::Base
 	before_save { firstname.strip! if firstname? }
 	before_save { lastname.strip! if lastname? }
 	before_validation { self.email = email.strip.downcase if email? }
-	
-	before_save { username.strip! }
 
 	has_many :sessions, class_name: "UserSession", dependent: :destroy
 	has_many :positions, through: :sessions, dependent: :destroy
@@ -43,11 +41,17 @@ class User < ActiveRecord::Base
 	validates :password, length: { minimum: 7 }
 	validates :email, format: { with: EMAIL_REGEX }, uniqueness: { case_sensitive: false }
 
+	self.per_page = 25
+
 	def name
 		[firstname, lastname].join(" ") if firstname.present? && lastname.present?
 	end
 
 	def first_or_lastname_present?
 		firstname.present? || lastname.present?
+	end
+
+	def self.search_by_username(search_cont)
+		where("username ILIKE ?", "%#{search_cont}%").order(:username)
 	end
 end

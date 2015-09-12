@@ -37,30 +37,51 @@ RSpec.describe User, type: :model do
 	it { is_expected.to have_many(:liked_posts) }
 
 
-	context "with firstname validation" do
+	describe "validates presence of firstname if lastname is present" do
 		before { allow(subject).to receive(:lastname?) { true } }
 		it { is_expected.to validate_presence_of(:firstname).with_message("can't be blank if Lastname is set") }
 	end
 
-	context "with lastname validation" do
+	context "validates presence of lastname if firstname is present" do
 		before { allow(subject).to receive(:firstname?) { true } }
 		it { is_expected.to validate_presence_of(:lastname).with_message("can't be blank if Firstname is set") }
 	end
 
-	it "returns nil for full name because of missing first and lastname" do
-		subject.firstname = nil
-		subject.lastname = nil
-		expect(subject.name).to be_nil
+	describe "#name" do
+		context "without first and lastname" do
+			let(:user) { build(:user, firstname: nil, lastname: nil) }
+
+			it "returns nil" do
+				expect(user.name).to be_nil
+			end
+		end
+
+		context "with first and lastname" do
+			let(:user) { build(:user) }
+
+			it "returns the first and lastname" do
+				expect(user.name).to eq([user.firstname, user.lastname].join(" "))
+			end
+		end
 	end
 
-	it "returns the full name as string" do
-		expect(subject.name).to eq("#{subject.firstname} #{subject.lastname}")
+	describe "@email" do
+		let(:user) { build(:user, email: "#{FFaker::Internet.email.upcase} ") }
+		before { user.valid? }
+
+		it "strips the value and converts uppercase characters into lowercase" do
+			expect(user.email).to eq(user.email.strip.downcase)
+		end
 	end
 
-	it "is an email with all lowercased letters" do
-		subject.email.upcase!
-		subject.valid?
-		expect(subject.email).to eq(subject.email.downcase)
+	describe ".search_by_username" do
+		let(:users) { create_list(:user, 10) }
+
+		it "returns only the searched users" do
+			user = users[Random.rand(10)]
+
+			expect(User.search_by_username(user.username)).to eq([user])
+		end
 	end
 end
 
