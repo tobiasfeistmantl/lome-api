@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "V1::User::Session::Positions", type: :request do
+RSpec.describe "Session Position Resource", type: :request do
 	describe "POST user/:user_id/session/:session_id/positions" do
 		let(:user_session) { create(:user_session) }
 

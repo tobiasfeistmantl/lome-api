@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 			resources :relationships, module: :relationship, only: [:create]
 
 			delete "relationships" => "relationship/relationships#destroy", as: :relationship
+
+			get 'follower' => "relationship/follower#index", as: :follower
 		end
 
 		post "users/sessions" => "user/sessions#create", as: :user_sessions
