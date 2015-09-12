@@ -1,6 +1,6 @@
 include ActionController::HttpAuthentication::Basic
 
-class V1::User::SessionsController < V1::User::Base
+class V1::User::Session::SessionsController < V1::User::Session::Base
 	skip_before_action :set_user, :authenticate_user!, :authorize_user!, only: [:create]
 	before_action :authenticate_user_with_basic!, only: [:create]
 	before_action :set_user_session, only: [:show, :destroy]
@@ -43,20 +43,6 @@ class V1::User::SessionsController < V1::User::Base
 	end
 
 	protected
-
-	def set_user_session
-		@user_session = @user.sessions.find(params[:id])
-	rescue ActiveRecord::RecordNotFound
-		render "v1/errors/default",
-		locals: {
-			error: {
-				type: "USER_SESSION_NOT_FOUND",
-				message: {
-					user: "Session was not found"
-				}
-			}
-		}, status: 404
-	end
 
 	def authenticate_user_with_basic!
 		if request.authorization
