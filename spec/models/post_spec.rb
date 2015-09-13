@@ -27,4 +27,12 @@ RSpec.describe Post, type: :model do
 		subject { build(:post, message: nil, image: nil) }
 		it { is_expected.to be_invalid }
 	end
+
+	context ".newest" do
+		let(:posts) { create_list(:post, 10) }
+
+		it "returns the posts descendent ordered by created at" do
+			expect(Post.newest).to eq(Post.order(created_at: :desc))
+		end
+	end
 end

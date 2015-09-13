@@ -19,7 +19,7 @@ class V1::User::Session::SessionsController < V1::User::Session::Base
 						user: "Unable to log in"
 					}
 				}
-			}, status: 500
+			}, status: 400
 		end
 	end
 

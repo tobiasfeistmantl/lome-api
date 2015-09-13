@@ -14,7 +14,7 @@ class V1::User::Session::PositionsController < V1::User::Session::Base
 						user: "Unable to save your current position"
 					}
 				}
-			}, status: 500
+			}, status: 400
 		end
 	end
 

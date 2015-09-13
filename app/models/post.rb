@@ -10,4 +10,10 @@ class Post < ActiveRecord::Base
 	enum status: [:published, :draft]
 
 	mount_uploader :image, PostImageUploader
+
+	self.per_page = 25
+
+	def self.newest
+		order(created_at: :desc)
+	end
 end

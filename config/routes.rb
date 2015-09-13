@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 			end
 
 			resources :relationships, module: :relationship, only: [:create]
+			resources :posts, module: :post, only: [:index, :create, :show, :update, :destroy]
 
 			delete "relationships" => "relationship/relationships#destroy", as: :relationship
 
