@@ -7,6 +7,9 @@ RSpec.describe Post, type: :model do
 
 	it { is_expected.to belong_to(:author) }
 	it { is_expected.to have_many(:likes).dependent(:destroy) }
+
+	it { is_expected.to validate_presence_of(:latitude) }
+	it { is_expected.to validate_presence_of(:longitude) }
 	
 	context "without message" do
 		subject { build(:post, message: nil) }

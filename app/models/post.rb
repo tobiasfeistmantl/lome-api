@@ -3,6 +3,7 @@ class Post < ActiveRecord::Base
 
 	has_many :likes, dependent: :destroy
 
+	validates_presence_of [:latitude, :longitude]
 	validates_presence_of :message, unless: :image?
 	validates_presence_of :image, unless: :message?
 
