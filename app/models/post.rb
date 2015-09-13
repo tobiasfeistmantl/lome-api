@@ -7,5 +7,7 @@ class Post < ActiveRecord::Base
 	validates_presence_of :message, unless: :image?
 	validates_presence_of :image, unless: :message?
 
+	enum status: [:published, :draft]
+
 	mount_uploader :image, PostImageUploader
 end

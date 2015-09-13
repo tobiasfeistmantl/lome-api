@@ -10,6 +10,8 @@ RSpec.describe Post, type: :model do
 
 	it { is_expected.to validate_presence_of(:latitude) }
 	it { is_expected.to validate_presence_of(:longitude) }
+
+	it { is_expected.to define_enum_for(:status).with([:published, :draft]) }
 	
 	context "without message" do
 		subject { build(:post, message: nil) }
