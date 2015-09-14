@@ -5,7 +5,7 @@ FactoryGirl.define do
 	username { [FFaker::Internet::user_name, Random.rand(100)].join("_") }
 	password "123admin"
 	email { FFaker::Internet::email }
-	profile_image { File.open("#{ENV["HOME"]}/Developer/web/test/test-image.jpeg") }
+	profile_image { File.open(Rails.root.join(["spec", "data", "test-image.jpeg"].join("/"))) }
   end
 
 end

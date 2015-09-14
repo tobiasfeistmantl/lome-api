@@ -5,8 +5,12 @@ Rails.application.routes.draw do
 				resources :positions, only: [:create]
 			end
 
-			resources :relationships, module: :relationship, only: [:create]
-			resources :posts, module: :post, only: [:index, :create, :show, :update, :destroy]
+			resources :relationships, module: :relationship, only: [:create] do
+			end
+			resources :posts, module: :post, only: [:index, :create, :show, :update, :destroy] do
+				resources :likes, only: [:index, :create]
+				delete "likes" => "likes#destroy", as: :like
+			end
 
 			delete "relationships" => "relationship/relationships#destroy", as: :relationship
 

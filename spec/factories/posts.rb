@@ -4,7 +4,7 @@ FactoryGirl.define do
 		latitude 47.358500
 		longitude 11.703402
 		association :author, factory: :user
-		image { File.open("#{ENV["HOME"]}/Developer/web/test/test-image.jpeg") }
+		image { File.open(Rails.root.join(["spec", "data", "test-image.jpeg"].join("/"))) }
 		status "published"
 
 		factory :drafted_post do

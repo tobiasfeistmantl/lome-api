@@ -41,8 +41,6 @@ class User < ActiveRecord::Base
 	validates :password, length: { minimum: 7 }
 	validates :email, format: { with: EMAIL_REGEX }, uniqueness: { case_sensitive: false }
 
-	self.per_page = 25
-
 	def name
 		[firstname, lastname].join(" ") if firstname.present? && lastname.present?
 	end

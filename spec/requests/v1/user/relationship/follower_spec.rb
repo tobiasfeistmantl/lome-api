@@ -7,12 +7,12 @@ RSpec.describe "User Follower Resource", type: :request do
 	before { create_list(:relationship, 50, followed: user) }
 
 	describe "GET /user/:user_id/follower" do
-		it "returns the 25 first follower" do
+		it "returns the 30 first follower" do
 			request_with_user_session :get, "/v1/users/#{user.id}/follower", user_session
 
 			expect(response).to have_http_status(200)
 			expect(json["count"]).to eq(user.follower.count)
-			expect(json["follower"].count).to eq(25)
+			expect(json["follower"].count).to eq(30)
 		end
 	end
 end

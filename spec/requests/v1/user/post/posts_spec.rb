@@ -13,11 +13,11 @@ RSpec.describe "User Post Resource", type: :request do
 			drafted_posts
 		end
 
-		it "returns the 25 last published posts" do
+		it "returns the 30 last published posts" do
 			request_with_user_session :get, "/v1/users/#{user.id}/posts", user_session
 
 			expect(response).to have_http_status(200)
-			expect(json.count).to eq(25)
+			expect(json.count).to eq(30)
 			expect(json[0]).to include("message", "image", "latitude", "longitude", "like_count")
 		end
 	end

@@ -9,6 +9,7 @@ group :development, :test do
 	gem 'ffaker'
 	gem 'shoulda-matchers'
 	gem 'database_cleaner'
+	gem 'rb-fsevent'
 end
 
 group :production do
@@ -17,7 +18,7 @@ group :production do
 	gem 'fog-aws'
 end
 
-gem 'rails', '4.2.3'
+gem 'rails', '4.2.4'
 gem 'rails-api'
 gem 'jbuilder'
 gem 'bcrypt', '~> 3.1.7'

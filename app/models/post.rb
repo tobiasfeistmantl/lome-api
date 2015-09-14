@@ -11,8 +11,6 @@ class Post < ActiveRecord::Base
 
 	mount_uploader :image, PostImageUploader
 
-	self.per_page = 25
-
 	def self.newest
 		order(created_at: :desc)
 	end

@@ -22,8 +22,8 @@ RSpec.describe V1::User::UsersController, type: :controller do
 			context "without search param" do
 				before { get :index, format: :json }
 
-				it "returns the first 25 users" do
-					expect(assigns(:users)).to match_array(User.order(:username).limit(25))
+				it "returns the first 30 users" do
+					expect(assigns(:users)).to match_array(User.order(:username).limit(30))
 				end
 			end
 
