@@ -1,6 +1,2 @@
-json.extract! @post, :id, :message, :image, :latitude, :longitude
+json.partial! "v1/user/post/posts/attributes", post: @post
 json.like_count @post.likes.count
-
-if @user == current_user
-	json.status @post.status
-end

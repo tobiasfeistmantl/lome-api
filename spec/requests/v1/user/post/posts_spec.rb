@@ -18,7 +18,7 @@ RSpec.describe "User Post Resource", type: :request do
 
 			expect(response).to have_http_status(200)
 			expect(json.count).to eq(30)
-			expect(json[0]).to include("message", "image", "latitude", "longitude", "like_count")
+			expect(json[0]).to include("message", "image", "latitude", "longitude", "like_count", "liked")
 		end
 	end
 
@@ -49,8 +49,7 @@ RSpec.describe "User Post Resource", type: :request do
 					request_with_user_session :get, "/v1/users/#{user.id}/posts/#{post.id}", user_session
 
 					expect(response).to have_http_status(200)
-					expect(json).to include("id", "message", "image", "latitude", "longitude", "like_count")
-					expect(json).not_to include("status")
+					expect(json).to include("id", "message", "image", "latitude", "longitude", "like_count", "liked")
 				end
 			end
 
@@ -61,7 +60,7 @@ RSpec.describe "User Post Resource", type: :request do
 					request_with_user_session :get, "/v1/users/#{user.id}/posts/#{post.id}", user_session
 
 					expect(response).to have_http_status(200)
-					expect(json).to include("id", "message", "image", "latitude", "longitude", "like_count", "status")
+					expect(json).to include("id", "message", "image", "latitude", "longitude", "like_count", "status", "liked")
 				end
 			end
 		end
