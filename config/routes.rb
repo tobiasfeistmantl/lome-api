@@ -10,6 +10,12 @@ Rails.application.routes.draw do
 			resources :posts, module: :post, only: [:index, :create, :show, :update, :destroy] do
 				resources :likes, only: [:index, :create]
 				delete "likes" => "likes#destroy", as: :like
+
+				resource :image, only: [:update], controller: :image
+
+				collection do
+					resource :image, only: [:create], as: :post_image_create, controller: :image
+				end
 			end
 
 			delete "relationships" => "relationship/relationships#destroy", as: :relationship
