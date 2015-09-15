@@ -32,7 +32,8 @@ RSpec.describe "User Resource", type: :request do
 			post "/v1/users", { user: user }
 
 			expect(response).to have_http_status(201)
-			expect(User.find_by(email: user[:email])).to_not be_nil
+			expect(json).to include("firstname" => user[:firstname], "lastname" => user[:lastname], "username" => user[:username], "email" => user[:email])
+			expect(json).to include("id")
 		end
 	end
 

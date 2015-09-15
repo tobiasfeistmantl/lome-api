@@ -47,6 +47,12 @@ RSpec.describe User, type: :model do
 		it { is_expected.to validate_presence_of(:lastname).with_message("can't be blank if Firstname is set") }
 	end
 
+	context "with minimum data" do
+		subject { build(:user_with_minimum_data) }
+
+		it { is_expected.to be_valid }
+	end
+
 	describe "#name" do
 		context "without first and lastname" do
 			let(:user) { build(:user, firstname: nil, lastname: nil) }

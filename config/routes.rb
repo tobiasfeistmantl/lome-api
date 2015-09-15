@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 			get 'followed' => "relationship/followed#index", as: :followed
 		end
 
-		post "users/sessions" => "user/sessions#create", as: :user_sessions
+		post "users/sessions" => "user/session/sessions#create", as: :user_sessions
 
 		namespace :posts, module: :post do
 			get 'nearby' => 'nearby#index', as: :nearby

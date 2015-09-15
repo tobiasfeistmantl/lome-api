@@ -6,6 +6,13 @@ FactoryGirl.define do
 	password "123admin"
 	email { FFaker::Internet::email }
 	profile_image { File.open(Rails.root.join(["spec", "data", "test-image.jpeg"].join("/"))) }
+
+	factory :user_with_minimum_data do
+		firstname nil
+		lastname nil
+		email nil
+		profile_image nil
+	end
   end
 
 end

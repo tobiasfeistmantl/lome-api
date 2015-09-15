@@ -4,14 +4,14 @@ class V1::User::UsersController < V1::User::Base
 	skip_before_action :authorize_user!, only: [:index, :show, :create]
 
 	def index
-		@users = User.search_by_username(params[:q]).paginate(page: params[:page])
+		@users = ::User.search_by_username(params[:q]).paginate(page: params[:page])
 	end
 
 	def create
-		@user = User.new user_create_params
+		@user = ::User.new user_create_params
 
 		if @user.save
-			render nothing: true, status: 201, location: v1_user_url(@user)
+			render "create", status: 201, location: v1_user_url(@user)
 		else
 			render "v1/errors/default",
 			locals: {

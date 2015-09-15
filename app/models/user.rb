@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
 		format: { with: USERNAME_REGEX },
 		length: { maximum: 30 }
 	validates :password, length: { minimum: 7 }
-	validates :email, format: { with: EMAIL_REGEX }, uniqueness: { case_sensitive: false }
+	validates :email, format: { with: EMAIL_REGEX }, uniqueness: { case_sensitive: false }, if: :email?
 
 	def name
 		[firstname, lastname].join(" ") if firstname.present? && lastname.present?
