@@ -18,7 +18,7 @@ RSpec.describe "User Post Resource", type: :request do
 
 			expect(response).to have_http_status(200)
 			expect(json.count).to eq(30)
-			expect(json[0]).to include("message", "image", "latitude", "longitude", "like_count", "liked")
+			expect(json[0]).to include_post_attributes
 		end
 	end
 
@@ -29,13 +29,15 @@ RSpec.describe "User Post Resource", type: :request do
 			request_with_user_session :post, "/v1/users/#{user.id}/posts", user_session, post: attributes_for(:drafted_post)
 
 			expect(response).to have_http_status(201)
-			expect(json).to include("id", "message", "image", "latitude", "longitude")
+			expect(json).to include_post_attributes
 			expect(json["status"]).to eq("draft")
 		end
 
 		it "creates a new published post" do
 			request_with_user_session :post, "/v1/users/#{user.id}/posts", user_session, post: attributes_for(:post)
-			expect(json).to include("id", "message", "image", "latitude", "longitude")
+
+			expect(response).to have_http_status(201)
+			expect(json).to include_post_attributes
 			expect(json["status"]).to eq("published")
 		end
 	end
@@ -49,7 +51,7 @@ RSpec.describe "User Post Resource", type: :request do
 					request_with_user_session :get, "/v1/users/#{user.id}/posts/#{post.id}", user_session
 
 					expect(response).to have_http_status(200)
-					expect(json).to include("id", "message", "image", "latitude", "longitude", "like_count", "liked")
+					expect(json).to include_post_attributes
 				end
 			end
 
@@ -60,7 +62,7 @@ RSpec.describe "User Post Resource", type: :request do
 					request_with_user_session :get, "/v1/users/#{user.id}/posts/#{post.id}", user_session
 
 					expect(response).to have_http_status(200)
-					expect(json).to include("id", "message", "image", "latitude", "longitude", "like_count", "status", "liked")
+					expect(json).to include_post_attributes
 				end
 			end
 		end
@@ -83,7 +85,7 @@ RSpec.describe "User Post Resource", type: :request do
 					request_with_user_session :get, "/v1/users/#{user.id}/posts/#{post.id}", user_session
 
 					expect(response).to have_http_status(200)
-					expect(json).to include("id", "message", "image", "latitude", "longitude", "status")
+					expect(json).to include_post_attributes
 				end
 			end
 		end
@@ -98,7 +100,7 @@ RSpec.describe "User Post Resource", type: :request do
 			request_with_user_session :patch, "/v1/users/#{user.id}/posts/#{post.id}", user_session, post: updated_post_attributes
 
 			expect(response).to have_http_status(200)
-			expect(json).to include("id", "image", "status", "like_count")
+			expect(json).to include_post_attributes
 			expect(json).to include("message" => updated_post_attributes[:message])
 		end
 	end
@@ -114,14 +116,3 @@ RSpec.describe "User Post Resource", type: :request do
 		end
 	end
 end
-
-
-
-
-
-
-
-
-
-
-

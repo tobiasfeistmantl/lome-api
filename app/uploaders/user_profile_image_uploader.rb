@@ -25,19 +25,14 @@ class UserProfileImageUploader < BaseUploader
   # end
 
   # Process files as they are uploaded:
-  process :resize_to_limit => [960, 960]
+  process :resize_to_limit => [640, 640]
   #
   # def scale(width, height)
   #   # do something
   # end
 
-  # Create different versions of your uploaded files:
-  version :profile do
-    process :resize_to_fit => [216, 216]
-  end
-
   version :thumb do
-    process :resize_to_fit => [90, 90]
+    process :resize_to_fit => [150, 150]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

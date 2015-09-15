@@ -5,7 +5,7 @@ class V1::User::Base < V1::Base
 	protected
 
 	def set_user
-		@user = User.find(params[:user_id] || params[:id])
+		@user = ::User.find(params[:user_id] || params[:id])
 	rescue ActiveRecord::RecordNotFound
 		render 'v1/errors/default',
 		locals: {

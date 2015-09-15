@@ -26,9 +26,17 @@ class PostImageUploader < BaseUploader
   # end
 
   # Create different versions of your uploaded files:
-  # version :thumb do
-  #   process :resize_to_fit => [50, 50]
-  # end
+  version :thumb do
+    process :resize_to_fit => [150, 150]
+  end
+
+  version :low_resolution do
+    process :resize_to_fit => [480, 320]
+  end
+
+  version :standard_resolution do
+    process :resize_to_fit => [1334, 750]
+  end
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:

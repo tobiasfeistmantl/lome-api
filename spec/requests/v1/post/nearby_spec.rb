@@ -1,21 +1,35 @@
 require 'rails_helper'
 
 RSpec.describe "Posts Nearby Endpoint", type: :request do
-	let(:user_position) { create(:user_position) }
-	let(:user_session) { user_position.session }
-	let(:posts) { create_list(:post, 50) }
-
 	describe "GET /posts/nearby" do
-		before { posts }
+		let(:user_session) { create(:user_session) }
+		let(:posts) { create_list(:post, 50) }
 
-		it "returns the 15 nearest posts" do
-			request_with_user_session :get, "/v1/posts/nearby", user_session
+		context "with user position" do
+			let(:user_position) { create(:user_position, session: user_session) }
+			
 
-			expect(response).to have_http_status(200)
-			expect(json.count).to eq(15)
-			expect(json[0]["user"]).to include("id", "firstname", "lastname", "username")
-			expect(json[0]["post"]).to include("id", "message", "image", "latitude", "longitude", "status", "created_at")
-			expect(json[0]).to include("distance_in_km")
+			it "returns the 15 nearest posts" do
+				posts  # Create posts
+				user_position  # create user position
+
+				request_with_user_session :get, "/v1/posts/nearby", user_session
+
+				expect(response).to have_http_status(200)
+				expect(json.count).to eq(15)
+				expect(json[0]["user"]).to include_non_private_user_attributes
+				expect(json[0]["post"]).to include_post_attributes
+				expect(json[0]).to include("distance_in_km")
+			end
+		end
+
+		context "without user position" do
+			it "returns an error" do
+				request_with_user_session :get, "/v1/posts/nearby", user_session
+
+				expect(response).to have_http_status(400)
+				expect(response).to render_default_error_template
+			end
 		end
 	end
 end
