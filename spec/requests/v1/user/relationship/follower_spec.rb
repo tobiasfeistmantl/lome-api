@@ -12,7 +12,9 @@ RSpec.describe "User Follower Resource", type: :request do
 
 			expect(response).to have_http_status(200)
 			expect(json["count"]).to eq(user.follower.count)
+
 			expect(json["follower"].count).to eq(30)
+			expect(json["follower"][0]).to include_non_private_user_attributes
 		end
 	end
 end

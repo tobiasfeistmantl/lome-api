@@ -75,6 +75,7 @@ RSpec.describe "User Post Resource", type: :request do
 					request_with_user_session :get, "/v1/users/#{user.id}/posts/#{post.id}", user_session
 
 					expect(response).to have_http_status(404)
+					expect(response).to render_default_error_template
 				end
 			end
 

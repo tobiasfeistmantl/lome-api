@@ -3,7 +3,7 @@ include ActionController::HttpAuthentication::Basic
 class V1::User::Session::SessionsController < V1::User::Session::Base
 	skip_before_action :set_user, :authenticate_user!, :authorize_user!, only: [:create]
 	before_action :authenticate_user_with_basic!, only: [:create]
-	before_action :set_user_session, only: [:show, :destroy]
+	before_action :set_user_session, only: [:destroy]
 
 	def create
 		@user_session = @user.sessions.new
@@ -21,9 +21,6 @@ class V1::User::Session::SessionsController < V1::User::Session::Base
 				}
 			}, status: 400
 		end
-	end
-
-	def show
 	end
 
 	def destroy

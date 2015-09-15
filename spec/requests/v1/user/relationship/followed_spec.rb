@@ -14,6 +14,7 @@ RSpec.describe "User Followed Resource", type: :request do
 			expect(json["count"]).to eq(user.following.count)
 
 			expect(json["followed_users"].count).to eq(30)
+			expect(json["followed_users"][0]).to include_non_private_user_attributes
 		end
 	end
 end

@@ -15,6 +15,7 @@ RSpec.describe "Post Like Resource", type: :request do
 			expect(response).to have_http_status(200)
 			expect(json["count"]).to eq(40)
 			expect(json["likes"].count).to eq(30)
+			expect(json["likes"][0]["user"]).to include_non_private_user_attributes
 		end
 	end
 
