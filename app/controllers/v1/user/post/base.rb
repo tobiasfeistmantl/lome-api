@@ -5,9 +5,9 @@ class V1::User::Post::Base < V1::User::Base
 
 	def set_post
 		if current_user == @user
-			@post = @user.posts.includes(:likes).find(params[:post_id] || params[:id])
+			@post = @user.posts.unscoped.includes(:likes).find(params[:post_id] || params[:id])
 		else
-			@post = @user.posts.published.includes(:likes).find(params[:post_id] || params[:id])
+			@post = @user.posts.find(params[:post_id] || params[:id])
 		end
 	rescue ActiveRecord::RecordNotFound
 		render "v1/errors/default",

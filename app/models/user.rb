@@ -20,6 +20,8 @@ class User < ActiveRecord::Base
 	has_many :passive_relationships, class_name: "Relationship", foreign_key: :followed_id, dependent: :destroy
 	has_many :follower, through: :passive_relationships, source: :follower
 
+	default_scope { includes(:follower) }
+
 	has_many :posts, foreign_key: :author_id, dependent: :destroy
 
 	has_many :liked_posts, class_name: "Like"

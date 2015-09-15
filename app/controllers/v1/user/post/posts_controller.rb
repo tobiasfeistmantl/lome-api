@@ -3,7 +3,7 @@ class V1::User::Post::PostsController < V1::User::Post::Base
 	skip_before_action :authorize_user!, only: [:index, :show]
 
 	def index
-		@posts = @user.posts.published.newest.includes(:likes).paginate(page: params[:page])
+		@posts = @user.posts.newest.paginate(page: params[:page])
 	end
 
 	def create

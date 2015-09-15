@@ -10,7 +10,7 @@ RSpec.describe "User Resource", type: :request do
 			request_with_user_session :get, "/v1/users", user_session
 
 			expect(response).to have_http_status(200)
-			expect(json[0]).to include("id", "firstname", "lastname", "username", "profile_image")
+			expect(json[0]).to include_non_private_user_attributes
 		end
 		
 		it "returns all users with a username search condition" do
@@ -20,8 +20,8 @@ RSpec.describe "User Resource", type: :request do
 			request_with_user_session :get, "/v1/users", user_session, { q: random_user.username }
 
 			expect(response).to have_http_status(200)
-			expect(json[0]).to include("id" => random_user.id, "username" => random_user.username)
-			expect(json[0]["profile_image"]).to include("full", "profile", "thumb")
+			expect(json[0]).to include_non_private_user_attributes
+			expect(json[0]["id"]).to eq(random_user.id)
 		end
 	end
 
@@ -32,7 +32,7 @@ RSpec.describe "User Resource", type: :request do
 			post "/v1/users", { user: user }
 
 			expect(response).to have_http_status(201)
-			expect(json).to include("firstname" => user[:firstname], "lastname" => user[:lastname], "username" => user[:username], "email" => user[:email])
+			expect(json).to include_non_private_user_attributes
 			expect(json).to include("id")
 		end
 	end
@@ -44,8 +44,8 @@ RSpec.describe "User Resource", type: :request do
 			request_with_user_session :get, "/v1/users/#{user.id}", user_session
 
 			expect(response).to have_http_status(200)
-			expect(json).to include("id" => user.id, "firstname" => user.firstname, "lastname" => user.lastname, "username" => user.username, "email" => user.email)
-			expect(json).to include("profile_image")
+			expect(json).to include_non_private_user_attributes
+			expect(json["id"]).to eq(user.id)
 		end
 
 		it "returns another user than the sessions user" do
@@ -54,8 +54,7 @@ RSpec.describe "User Resource", type: :request do
 			request_with_user_session :get, "/v1/users/#{other_user.id}", user_session
 
 			expect(response).to have_http_status(200)
-			expect(json).to include("id", "firstname", "lastname", "username", "profile_image")
-			expect(json).to_not include("email")
+			expect(json).to include_non_private_user_attributes
 		end
 	end
 
@@ -68,7 +67,7 @@ RSpec.describe "User Resource", type: :request do
 
 			expect(response).to have_http_status(200)
 			expect(json).to include("id" => user.id, "firstname" => user_attributes[:firstname], "lastname" => user_attributes[:lastname], "email" => user_attributes[:email])
-			expect(json).to include("profile_image")
+			expect(json).to include_non_private_user_attributes
 		end
 	end
 
