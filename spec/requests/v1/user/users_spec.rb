@@ -33,7 +33,19 @@ RSpec.describe "User Resource", type: :request do
 
 			expect(response).to have_http_status(201)
 			expect(json).to include_non_private_user_attributes
-			expect(json).to include("id")
+			expect(json["id"]).to_not be_nil
+		end
+
+		context "with minimum data" do
+			let(:user) { attributes_for(:user_with_minimum_data) }
+
+			it "create a valid user" do
+				post "/v1/users", { user: user }
+
+				expect(response).to have_http_status(201)
+				expect(json).to include_non_private_user_attributes
+				expect(json["id"]).to_not be_nil
+			end
 		end
 	end
 
