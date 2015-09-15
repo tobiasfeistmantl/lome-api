@@ -25,5 +25,9 @@ Rails.application.routes.draw do
 		end
 
 		post "users/sessions" => "user/sessions#create", as: :user_sessions
+
+		namespace :posts, module: :post do
+			get 'nearby' => 'nearby#index', as: :nearby
+		end
 	end
 end

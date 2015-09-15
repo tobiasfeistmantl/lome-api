@@ -11,6 +11,8 @@ class Post < ActiveRecord::Base
 
 	mount_uploader :image, PostImageUploader
 
+	reverse_geocoded_by :latitude, :longitude
+
 	def self.newest
 		order(created_at: :desc)
 	end
