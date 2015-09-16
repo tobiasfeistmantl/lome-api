@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
 		uniqueness: { case_sensitive: false },
 		format: { with: USERNAME_REGEX },
 		length: { maximum: 30 }
-	validates :password, length: { minimum: 7 }
+	validates :password, length: { minimum: 7 }, allow_nil: true
 	validates :email, format: { with: EMAIL_REGEX }, uniqueness: { case_sensitive: false }, if: :email?
 
 	def name
