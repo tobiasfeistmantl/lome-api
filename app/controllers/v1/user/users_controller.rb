@@ -66,10 +66,10 @@ class V1::User::UsersController < V1::User::Base
 	private
 
 	def user_create_params
-		params.require(:user).permit(:firstname, :lastname, :username, :password, :email)
+		params.require(:user).permit(:firstname, :lastname, :username, :password, :email, :profile_image)
 	end
 
 	def user_update_params
-		params.require(:user).permit(:firstname, :lastname, :password, :email)
+		params.require(:user).permit(:firstname, :lastname, :password, :email, :profile_image)
 	end
 end
