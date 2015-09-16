@@ -15,7 +15,7 @@ end
 group :production do
 	gem 'rails_12factor'
 	gem 'newrelic_rpm'
-	gem 'fog-aws'
+	gem 'fog'
 end
 
 gem 'rails', '4.2.4'
