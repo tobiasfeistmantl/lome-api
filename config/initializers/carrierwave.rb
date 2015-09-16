@@ -6,8 +6,7 @@ CarrierWave.configure do |config|
 			aws_access_key_id: ENV["AWS_ACCESS_KEY_ID"],
 			aws_secret_access_key: ENV["AWS_SECRECT_ACCESS_KEY"],
 			region: ENV["AWS_REGION"],
-			host: ENV["AWS_HOST"],
-			endpoint: ENV["AWS_ENDPOINT"]
+			host: ENV["AWS_HOST"]
 		}
 
 		config.storage = :fog
