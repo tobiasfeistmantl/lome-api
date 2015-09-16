@@ -1,6 +1,4 @@
-json.extract! user, :id, :firstname, :lastname, :username
-
-json.follower_count user.follower.count
+json.extract! user, :id, :firstname, :lastname, :username, :follower_count
 
 json.profile_image do
 	json.standard_resolution user.profile_image.url

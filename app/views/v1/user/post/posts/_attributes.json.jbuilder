@@ -1,4 +1,4 @@
-json.extract! post, :id, :message, :latitude, :longitude, :status, :created_at
+json.extract! post, :id, :message, :latitude, :longitude, :status, :created_at, :likes_count
 
 json.image do
 	json.low_resolution post.image.low_resolution.url
@@ -8,4 +8,3 @@ json.image do
 end
 
 json.liked post.likes(current_user).present?
-json.like_count post.likes.count

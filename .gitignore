@@ -35,5 +35,6 @@ bower.json
 .powenv
 
 .env
+.idea
 
 /public/uploads/
