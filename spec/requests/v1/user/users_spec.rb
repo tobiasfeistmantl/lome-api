@@ -81,7 +81,7 @@ RSpec.describe "User Resource", type: :request do
 			request_with_user_session :patch, "/v1/users/#{user.id}", user_session, { user: user_attributes }
 
 			expect(response).to have_http_status(200)
-			expect(json).to include("id" => user.id, "firstname" => user_attributes[:firstname], username: user.username, "lastname" => user_attributes[:lastname], "email" => user_attributes[:email])
+			expect(json).to include("id" => user.id, "firstname" => user_attributes[:firstname], "username" => user.username, "lastname" => user_attributes[:lastname], "email" => user_attributes[:email])
 			expect(json).to include_non_private_user_attributes
 		end
 	end
