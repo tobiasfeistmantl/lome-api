@@ -3,6 +3,7 @@ class Post < ActiveRecord::Base
 
 	has_many :likes, dependent: :destroy
 	default_scope { includes(:likes) }
+	default_scope { includes(:author) }
 
 	validates_presence_of [:latitude, :longitude]
 	validates_presence_of :message, unless: :image?

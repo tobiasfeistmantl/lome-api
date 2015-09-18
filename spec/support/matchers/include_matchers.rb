@@ -21,6 +21,7 @@ RSpec::Matchers.define :include_post_attributes do |expected|
 	match do |actual|
 		expect(actual).to include("id", "message", "latitude", "longitude", "likes_count", "liked", "status")
 		expect(actual["image"]).to include("low_resolution", "standard_resolution", "high_resolution", "thumbnail")
+		expect(actual["author"]).to include_non_private_user_attributes
 	end
 
 	failure_message do |actual|

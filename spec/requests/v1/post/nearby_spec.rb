@@ -17,8 +17,7 @@ RSpec.describe "Posts Nearby Endpoint", type: :request do
 
 				expect(response).to have_http_status(200)
 				expect(json.count).to eq(15)
-				expect(json[0]["user"]).to include_non_private_user_attributes
-				expect(json[0]["post"]).to include_post_attributes
+				expect(json[0]).to include_post_attributes
 				expect(json[0]).to include("distance_in_km")
 			end
 		end
