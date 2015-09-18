@@ -1,4 +1,4 @@
-json.extract! post, :id, :message, :latitude, :longitude, :status, :created_at, :likes_count
+json.extract! post, :id, :message, :latitude, :longitude, :status, :likes_count, :created_at
 
 json.image do
 	json.low_resolution post.image.low_resolution.url

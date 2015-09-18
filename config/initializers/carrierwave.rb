@@ -12,6 +12,7 @@ CarrierWave.configure do |config|
 		config.storage = :fog
 	else
 		config.storage = :file
+		config.asset_host = ActionController::Base.asset_host
 	end
 
 	if Rails.env.test?
