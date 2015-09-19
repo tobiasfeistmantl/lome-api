@@ -7,16 +7,28 @@ class V1::User::Post::LikesController < V1::User::Post::Base
 	end
 
 	def create
-		if @like = @post.likes.create(user: current_user)
-			render nothing: true, status: 204
+		unless @post.likes.find_by(user: current_user)
+			if @like = @post.likes.create(user: current_user)
+				render nothing: true, status: 204
+			else
+				render "v1/errors/default",
+				locals: {
+					error: {
+						type: "UNABLE_TO_CREATE_LIKE",
+						specific: @like.errors.messages,
+						message: {
+							user: "Unable to like post"
+						}
+					}
+				}, status: 400
+			end
 		else
-			render "v1/errors/default",
+			render "/v1/errors/default",
 			locals: {
 				error: {
-					type: "UNABLE_TO_CREATE_LIKE",
-					specific: @like.errors.messages,
+					type: "ALREADY_LIKED",
 					message: {
-						user: "Unable to like post"
+						user: "You already like this post"
 					}
 				}
 			}, status: 400
