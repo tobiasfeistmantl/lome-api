@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
 
 	before_save { firstname.strip! if firstname? }
 	before_save { lastname.strip! if lastname? }
+	before_validation :set_firstname_and_lastname_to_nil_unless_present
 	before_validation { self.email = email.strip.downcase if email? }
 
 	has_many :sessions, class_name: "UserSession", dependent: :destroy
@@ -42,6 +43,13 @@ class User < ActiveRecord::Base
 		length: { maximum: 30 }
 	validates :password, length: { minimum: 7 }, allow_nil: true
 	validates :email, format: { with: EMAIL_REGEX }, uniqueness: { case_sensitive: false }, if: :email?
+
+	def set_firstname_and_lastname_to_nil_unless_present
+		unless firstname.present? && lastname.present?
+			self.firstname = nil
+			self.lastname = nil
+		end
+	end
 
 	def name
 		[firstname, lastname].join(" ") if firstname.present? && lastname.present?

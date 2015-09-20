@@ -6,3 +6,5 @@ json.profile_image do
 	json.standard_resolution image.url
 	json.thumbnail image.thumb.url
 end
+
+json.following user.follower(current_user).present?
