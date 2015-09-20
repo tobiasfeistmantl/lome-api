@@ -25,7 +25,8 @@ class User < ActiveRecord::Base
 
 	has_many :posts, foreign_key: :author_id, dependent: :destroy
 
-	has_many :liked_posts, class_name: "Like"
+	has_many :likes, dependent: :destroy
+	has_many :liked_posts, through: :likes, source: :post
 
 	validates :firstname, length: { maximum: 15 }
 	validates :firstname, presence: {
