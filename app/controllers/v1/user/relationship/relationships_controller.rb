@@ -54,7 +54,7 @@ class V1::User::Relationship::RelationshipsController < V1::User::Relationship::
 	end
 
 	def set_relationship_by_followed_id
-		unless @relationship = @user.active_relationships.find_by(followed_id: params[:followed_id])
+		unless @relationship = @user.active_relationships.find_by(followed_id: params[:relationship][:followed_id])
 			render "v1/errors/default",
 			locals: {
 				error: {

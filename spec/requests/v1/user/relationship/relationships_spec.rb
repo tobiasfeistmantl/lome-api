@@ -17,7 +17,7 @@ RSpec.describe "User Relationship Resource", type: :request do
 		before { create(:relationship, follower: user, followed: followed_user) }
 
 		it "deletes a relationship" do
-			request_with_user_session :delete, "/v1/users/#{user.id}/relationships", user_session, followed_id: followed_user.id
+			request_with_user_session :delete, "/v1/users/#{user.id}/relationships", user_session, relationship: { followed_id: followed_user.id }
 
 			expect(response).to have_http_status(204)
 		end
