@@ -26,4 +26,37 @@ RSpec.describe Relationship, type: :model do
 			expect(subject.save).to be_falsey
 		end
 	end
+
+	context "uniqueness validations" do
+		let(:followed_user) { create(:user) }
+		let(:another_followed_user) { create(:user) }
+		let(:follower) { create(:user) }
+		let(:another_follower) { create(:user) }
+
+		before { create(:relationship, followed: followed_user, follower: follower) }
+
+		it "raises an error on duplicated relationships" do
+			expect {
+				create(:relationship, followed: followed_user, follower: follower)
+			}.to raise_error(ActiveRecord::RecordInvalid)
+		end
+
+		it "raises no errors if the followed follows the follower" do
+			expect {
+				create(:relationship, followed: follower, follower: followed_user) 
+			}.to_not raise_error
+		end
+
+		it "does not validate @followed alone" do
+			expect {
+				create(:relationship, followed: followed_user, follower: another_follower)
+			}.to_not raise_error
+		end
+
+		it "does not validate @follower alone" do
+			expect {
+				create(:relationship, followed: another_followed_user, follower: follower)
+			}.to_not raise_error
+		end
+	end
 end

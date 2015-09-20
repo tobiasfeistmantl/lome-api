@@ -3,6 +3,7 @@ class Relationship < ActiveRecord::Base
 	belongs_to :followed, class_name: "User", counter_cache: :follower_count
 
 	validates_presence_of [:follower, :followed]
+	validates_uniqueness_of :follower_id, scope: :followed_id
 
 	validate :follower_and_followed_are_not_the_same
 

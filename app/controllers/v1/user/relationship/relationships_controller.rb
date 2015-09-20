@@ -2,18 +2,28 @@ class V1::User::Relationship::RelationshipsController < V1::User::Relationship::
 	before_action :set_relationship_by_followed_id, only: [:destroy]
 
 	def create
-		@relationship = @user.active_relationships.new relationship_params
-
-		if @relationship.save
-			render nothing: true, status: 204
+		unless @user.following.find_by(id: params[:relationship][:followed_id])
+			if @relationship = @user.active_relationships.create(relationship_params)
+				render nothing: true, status: 204
+			else
+				render "v1/errors/default",
+				locals: {
+					error: {
+						type: "UNABLE_TO_SAVE_RELATIONSHIP",
+						specific: @relationship.errors.messages,
+						message: {
+							user: "Unable to follow the user"
+						}
+					}
+				}, status: 400
+			end
 		else
-			render "v1/errors/default",
+			render "/v1/errors/default",
 			locals: {
 				error: {
-					type: "UNABLE_TO_SAVE_RELATIONSHIP",
-					specific: @relationship.errors.messages,
+					type: "ALREADY_FOLLOWING",
 					message: {
-						user: "Unable to follow the user"
+						user: "You already following this user"
 					}
 				}
 			}, status: 400
