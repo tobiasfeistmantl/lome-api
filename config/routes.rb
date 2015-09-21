@@ -13,10 +13,12 @@ Rails.application.routes.draw do
 			end
 
 			scope ':user_id' do
-				scope 'sessions/:session_id', module: :session do
-					get '' => 'sessions#show', as: :user_session
-					delete '' => 'sessions#destroy'
+				scope :sessions, module: :session do
+					get ':id' => 'sessions#show', as: :user_session
+					delete ':id' => 'sessions#destroy'
+				end
 
+				scope 'sessions/:session_id', module: :session do
 					post 'positions' => 'positions#create', as: :user_session_positions
 				end
 

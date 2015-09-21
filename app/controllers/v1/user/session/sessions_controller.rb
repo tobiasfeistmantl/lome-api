@@ -43,8 +43,7 @@ class V1::User::Session::SessionsController < V1::User::Session::Base
 
 	def authenticate_user_with_basic!
 		if request.authorization
-			username = user_name_and_password(request)[0]
-			password = user_name_and_password(request)[1]
+			username, password = user_name_and_password(request)
 
 			@user = ::User.find_by(username: username)
 
