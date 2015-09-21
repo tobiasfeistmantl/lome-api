@@ -10,8 +10,6 @@ end
 
 is_follower = nil
 
-if current_user
-	is_follower = user.follower(current_user).present?
-end
+is_follower = user.follower(current_user).present? if current_user
 
 json.following is_follower
