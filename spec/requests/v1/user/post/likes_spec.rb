@@ -21,7 +21,7 @@ RSpec.describe "Post Like Resource", type: :request do
 
 	describe "POST /users/:user_id/post/:post_id/likes" do
 		it "creates a new like" do
-			request_with_user_session :post, "/v1/users/#{user.id}/posts/#{a_post.id}/likes", user_session
+			request_with_user_session :post, "/v1/users/#{user.id}/posts/#{a_post.id}/like", user_session
 
 			expect(response).to have_http_status(204)
 		end
@@ -31,7 +31,7 @@ RSpec.describe "Post Like Resource", type: :request do
 		before { create(:like, post: a_post, user: user_session.user) }
 
 		it "deletes a like" do
-			request_with_user_session :delete, "/v1/users/#{user.id}/posts/#{a_post.id}/likes", user_session
+			request_with_user_session :delete, "/v1/users/#{user.id}/posts/#{a_post.id}/like", user_session
 
 			expect(response).to have_http_status(204)
 		end

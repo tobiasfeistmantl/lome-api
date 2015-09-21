@@ -1,30 +1,54 @@
 Rails.application.routes.draw do
 	namespace :v1, defaults: { format: :json } do
-		resources :users, module: :user, only: [:index, :create, :show, :update, :destroy] do
-			resources :sessions, module: :session, only: [:destroy] do
-				resources :positions, only: [:create]
+		scope :users, module: :user do
+			get '' => 'users#index', as: :users
+			post '' => 'users#create'
+			get ':id' => 'users#show', as: :user
+			put ':id' => 'users#update'
+			patch ':id' => 'users#update'
+			delete ':id' => 'users#destroy'
+
+			scope :sessions, module: :session do
+				post '' => 'sessions#create', as: :user_sessions
 			end
 
-			resources :relationships, module: :relationship, only: [:create] do
-			end
-			resources :posts, module: :post, only: [:index, :create, :show, :update, :destroy] do
-				resources :likes, only: [:index, :create]
-				delete "likes" => "likes#destroy", as: :like
+			scope ':user_id' do
+				scope 'sessions/:session_id', module: :session do
+					get '' => 'sessions#show', as: :user_session
+					delete '' => 'sessions#destroy'
 
-				resource :image, only: [:update], controller: :image
+					post 'positions' => 'positions#create', as: :user_session_positions
+				end
 
-				collection do
-					resource :image, only: [:create], as: :post_image_create, controller: :image
+				scope :posts, module: :post do
+					get '' => 'posts#index', as: :user_posts
+					post '' => 'posts#create'
+					get ':id' => 'posts#show', as: :user_post
+					put ':id' => 'posts#update'
+					patch ':id' => 'posts#update'
+					delete ':id' => 'posts#destroy'
+
+					scope ':post_id' do
+						get 'likes' => 'likes#index', as: :user_post_likes
+						post 'like' => 'likes#create', as: :user_post_like
+						delete 'like' => 'likes#destroy'
+
+						put 'image' => 'image#update', as: :user_post_image
+						patch 'image' => 'image#update'
+					end
+
+					post 'image' => 'image#create', as: :user_post_with_image
+				end
+
+				scope '', module: :relationship do
+					post 'relationships' => 'relationships#create', as: :user_relationships
+					delete 'relationships' => 'relationships#destroy'
+
+					get 'follower' => 'follower#index', as: :user_follower
+					get 'followed' => 'followed#index', as: :user_followed
 				end
 			end
-
-			delete "relationships" => "relationship/relationships#destroy", as: :relationship
-
-			get 'follower' => "relationship/follower#index", as: :follower
-			get 'followed' => "relationship/followed#index", as: :followed
 		end
-
-		post "users/sessions" => "user/session/sessions#create", as: :user_sessions
 
 		namespace :posts, module: :post do
 			get 'nearby' => 'nearby#index', as: :nearby
