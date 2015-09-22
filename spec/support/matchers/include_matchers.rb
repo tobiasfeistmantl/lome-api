@@ -17,6 +17,24 @@ RSpec::Matchers.define :include_non_private_user_attributes do |expected|
 	end
 end
 
+RSpec::Matchers.define :include_private_user_attributes do |expected|
+	match do |actual|
+		expect(actual).to include("email")
+	end
+
+	failure_message do |actual|
+		"expected to include private user attributes"
+	end
+
+	failure_message_when_negated do |actual|
+		"expected not to include private user attributes"
+	end
+
+	description do
+		"include all private user attributes"
+	end
+end
+
 RSpec::Matchers.define :include_post_attributes do |expected|
 	match do |actual|
 		expect(actual).to include("id", "message", "latitude", "longitude", "likes_count", "liked", "status", "created_at")

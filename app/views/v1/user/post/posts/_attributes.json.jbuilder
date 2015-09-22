@@ -11,4 +11,4 @@ json.author do
 	json.partial! "/v1/user/users/attributes", user: post.author
 end
 
-json.liked post.likes.find_by(user: current_user).present?
+json.liked post.likes.include?(current_user)

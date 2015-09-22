@@ -4,11 +4,7 @@ include ActiveSupport::SecurityUtils
 
 module V1::UsersHelper
 	def current_user
-		unless @current_user
-			@current_user = current_user_session.user if current_user_session
-		end
-
-		return @current_user
+		@current_user ||= current_user_session.user if current_user_session
 	end
 
 	def current_user_session
