@@ -1,7 +1,12 @@
 RSpec::Matchers.define :include_non_private_user_attributes do |expected|
 	match do |actual|
 		expect(actual).to include("id", "firstname", "lastname", "username", "follower_count", "following")
-		expect(actual["profile_image"]).to include("standard_resolution", "thumbnail")
+
+		["username", "follower_count"].each do |key|
+			expect(actual[key]).to_not be_nil
+		end
+
+		expect(actual["profile_image"]).to include("original", "thumbnail")
 	end
 
 	failure_message do |actual|
@@ -38,7 +43,7 @@ end
 RSpec::Matchers.define :include_post_attributes do |expected|
 	match do |actual|
 		expect(actual).to include("id", "message", "latitude", "longitude", "likes_count", "liked", "status", "created_at")
-		expect(actual["image"]).to include("low_resolution", "standard_resolution", "high_resolution", "thumbnail")
+		expect(actual["image"]).to include("original", "thumbnail")
 		expect(actual["author"]).to include_non_private_user_attributes
 	end
 

@@ -2,7 +2,7 @@ class V1::User::Post::ImageController < V1::User::Post::Base
 	skip_before_action :set_post, only: [:create]
 
 	def create
-		@post = @user.posts.new(image: params[:image_data], status: 1, latitude: 0, longitude: 0)
+		@post = @user.posts.new(image: params[:post][:image], status: 1, latitude: 0, longitude: 0)
 
 		if position = @user.positions.last
 			@post.latitude = position.latitude
@@ -26,7 +26,7 @@ class V1::User::Post::ImageController < V1::User::Post::Base
 	end
 
 	def update
-		if @post.update image: params[:image_data]
+		if @post.update image: params[:post][:image]
 			render "update", status: 200
 		else
 			render "v1/errors/default",

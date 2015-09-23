@@ -27,4 +27,4 @@ gem 'puma'
 gem 'geocoder'
 gem 'will_paginate'
 gem 'carrierwave'
-gem "mini_magick"
+gem 'mini_magick'

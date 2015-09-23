@@ -33,7 +33,7 @@ class BaseUploader < CarrierWave::Uploader::Base
 
   # Process files as they are uploaded:
   # process :scale => [200, 300]
-  process convert: 'png'
+  process convert: 'jpg'
   #
   # def scale(width, height)
   #   # do something
@@ -51,7 +51,7 @@ class BaseUploader < CarrierWave::Uploader::Base
   end
 
   def filename
-    "#{secure_token}" + '.png' if original_filename.present?
+    "#{secure_token}" + '.jpg' if original_filename.present?
   end
 
   protected
