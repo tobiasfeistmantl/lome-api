@@ -8,7 +8,6 @@ class User < ActiveRecord::Base
 
 	before_save { firstname.strip! if firstname? }
 	before_save { lastname.strip! if lastname? }
-	before_save :store_profile_image_dimensions
 	before_validation :set_firstname_and_lastname_to_nil_unless_present
 	before_validation { self.email = email.strip.downcase if email? }
 
@@ -63,26 +62,5 @@ class User < ActiveRecord::Base
 
 	def self.search_by_username(search_cont)
 		where("username ILIKE ?", "%#{search_cont}%").order(:username)
-	end
-
-	protected
-
-	def store_profile_image_dimensions
-		if profile_image?
-			original_dimensions = ::MiniMagick::Image.open(profile_image.file.file)[:dimensions]
-			thumb_dimensions = ::MiniMagick::Image.open(profile_image.thumb.file.file)[:dimensions]
-
-			self.profile_image_dimensions = {
-				original: {
-					width: original_dimensions[0],
-					height: original_dimensions[1]
-				},
-
-				thumbnail: {
-					width: thumb_dimensions[0],
-					height: thumb_dimensions[1]
-				}
-			}
-		end
 	end
 end

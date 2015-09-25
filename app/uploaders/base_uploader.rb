@@ -51,7 +51,13 @@ class BaseUploader < CarrierWave::Uploader::Base
   end
 
   def filename
-    "#{secure_token}" + '.jpg' if original_filename.present?
+    "#{secure_token}+#{image_aspect_ratio}+" + '.jpg' if original_filename.present?
+  end
+
+  def aspect_ratio
+    if file
+      file.filename.split('+')[1].to_f
+    end
   end
 
   protected
@@ -60,4 +66,39 @@ class BaseUploader < CarrierWave::Uploader::Base
     var = :"@#{mounted_as}_secure_token"
     model.instance_variable_get(var) or model.instance_variable_set(var, SecureRandom.uuid)
   end
+
+  private
+
+  def image_aspect_ratio
+    if file
+      unless Rails.env.test?
+        @image_dimensions ||= ::MiniMagick::Image.open(file.file)[:dimensions]
+      else
+        @image_dimensions ||= [1920, 1080]
+      end
+
+      var = :"@#{mounted_as}_aspect_ratio"
+      model.instance_variable_get(var) or model.instance_variable_set(var, Float(@image_dimensions[0]) / @image_dimensions[1])
+    end
+  end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
