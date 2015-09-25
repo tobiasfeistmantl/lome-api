@@ -306,6 +306,7 @@ DEPENDENCIES
   ffaker
   fog
   geocoder
+  guard
   guard-rspec
   jbuilder
   mini_magick

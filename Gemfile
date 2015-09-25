@@ -5,6 +5,7 @@ group :development, :test do
 	gem 'dotenv-rails'
 	gem 'rspec-rails'
 	gem 'factory_girl_rails'
+	gem 'guard'
 	gem 'guard-rspec', require: false
 	gem 'ffaker'
 	gem 'shoulda-matchers'
