@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150916071300) do
+ActiveRecord::Schema.define(version: 20150925174717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,10 +33,11 @@ ActiveRecord::Schema.define(version: 20150916071300) do
     t.float    "longitude"
     t.integer  "author_id"
     t.string   "image"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.integer  "status",      default: 0, null: false
-    t.integer  "likes_count", default: 0
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.integer  "status",           default: 0, null: false
+    t.integer  "likes_count",      default: 0
+    t.json     "image_dimensions"
   end
 
   add_index "posts", ["author_id"], name: "index_posts_on_author_id", using: :btree
@@ -81,11 +82,12 @@ ActiveRecord::Schema.define(version: 20150916071300) do
     t.string   "username"
     t.string   "password_digest"
     t.string   "email"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.string   "profile_image"
-    t.integer  "follower_count",  default: 0
-    t.integer  "followed_count",  default: 0
+    t.integer  "follower_count",           default: 0
+    t.integer  "followed_count",           default: 0
+    t.json     "profile_image_dimensions"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

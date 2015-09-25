@@ -1,10 +1,10 @@
 FactoryGirl.define do
 	factory :post do
 		message { FFaker::Lorem::paragraph }
-		latitude 47.358500
-		longitude 11.703402
+		latitude { FFaker::Geolocation.lat }
+		longitude { FFaker::Geolocation.lng }
 		association :author, factory: :user
-		image { File.open(Rails.root.join(["spec", "data", "test-image.jpeg"].join("/"))) }
+		image { File.open(Rails.root.join(["spec", "data", "demo_images", "#{Random.rand(15)}.jpg"].join("/"))) }
 		status "published"
 
 		factory :drafted_post do
