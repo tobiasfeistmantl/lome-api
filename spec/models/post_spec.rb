@@ -28,6 +28,16 @@ RSpec.describe Post, type: :model do
 		it { is_expected.to be_invalid }
 	end
 
+	context "message with empty string" do
+		subject { build(:post, message: "") }
+
+		before { subject.valid? }
+
+		it "returns nil for message" do
+			expect(subject.message).to be_nil
+		end
+	end
+
 	context ".newest" do
 		let(:posts) { create_list(:post, 10) }
 

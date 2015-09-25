@@ -54,6 +54,21 @@ RSpec.describe User, type: :model do
 		it { is_expected.to be_valid }
 	end
 
+	context "firstname and lastname with empty string" do
+		subject { build(:user, firstname: "", lastname: "") }
+
+		before { subject.valid? }
+
+		it "returns nil for firstname" do
+			expect(subject.firstname).to be_nil
+		end
+
+
+		it "returns nil for lastname" do
+			expect(subject.firstname).to be_nil
+		end
+	end
+
 	describe "#name" do
 		context "without first and lastname" do
 			let(:user) { build(:user, firstname: nil, lastname: nil) }

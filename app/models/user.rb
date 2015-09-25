@@ -45,13 +45,6 @@ class User < ActiveRecord::Base
 	validates :password, length: { minimum: 7 }, allow_nil: true
 	validates :email, format: { with: EMAIL_REGEX }, uniqueness: { case_sensitive: false }, if: :email?
 
-	def set_firstname_and_lastname_to_nil_unless_present
-		unless firstname.present? && lastname.present?
-			self.firstname = nil
-			self.lastname = nil
-		end
-	end
-
 	def name
 		[firstname, lastname].join(" ") if firstname.present? && lastname.present?
 	end
@@ -62,5 +55,14 @@ class User < ActiveRecord::Base
 
 	def self.search_by_username(search_cont)
 		where("username ILIKE ?", "%#{search_cont}%").order(:username)
+	end
+
+	protected
+
+	def set_firstname_and_lastname_to_nil_unless_present
+		unless firstname.present? && lastname.present?
+			self.firstname = nil
+			self.lastname = nil
+		end
 	end
 end
