@@ -78,7 +78,7 @@ class BaseUploader < CarrierWave::Uploader::Base
       end
 
       var = :"@#{mounted_as}_aspect_ratio"
-      model.instance_variable_get(var) or model.instance_variable_set(var, Float(@image_dimensions[0]) / @image_dimensions[1])
+      model.instance_variable_get(var) or model.instance_variable_set(var, Float(@image_dimensions[1]) / Float(@image_dimensions[0]))
     end
   end
 end
