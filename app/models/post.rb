@@ -4,7 +4,9 @@ class Post < ActiveRecord::Base
 	belongs_to :author, class_name: "User"
 
 	has_many :likes, dependent: :destroy
-	default_scope { includes(:likes) }
+	has_many :likers, through: :likes, source: :user
+
+	default_scope { includes(:likers) }
 	default_scope { includes(:author) }
 
 	validates_presence_of [:latitude, :longitude]
@@ -19,6 +21,10 @@ class Post < ActiveRecord::Base
 	reverse_geocoded_by :latitude, :longitude
 
 	scope :newest, -> { order(created_at: :desc) }
+
+	def liked_by?(user)
+		likers.include?(user)
+	end
 
 	protected
 

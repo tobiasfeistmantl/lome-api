@@ -5,8 +5,9 @@ RSpec.describe Post, type: :model do
 
 	it { is_expected.to be_valid }
 
-	it { is_expected.to belong_to(:author) }
+	it { is_expected.to belong_to(:author).class_name('User') }
 	it { is_expected.to have_many(:likes).dependent(:destroy) }
+	it { is_expected.to have_many(:likers).through(:likes).source(:user) }
 
 	it { is_expected.to validate_presence_of(:latitude) }
 	it { is_expected.to validate_presence_of(:longitude) }
@@ -43,6 +44,21 @@ RSpec.describe Post, type: :model do
 
 		it "returns the posts descendent ordered by created at" do
 			expect(Post.newest).to eq(Post.order(created_at: :desc))
+		end
+	end
+
+	context "#liked_by?" do
+		let(:like) { create(:like) }
+		let(:post) { like.post }
+		let(:liker) { like.user }
+		let(:another_user) { create(:user) }
+
+		it "returns true for the liker" do
+			expect(post.liked_by?(liker)).to be true
+		end
+
+		it "returns false for other users" do
+			expect(post.liked_by?(another_user)).to be false
 		end
 	end
 end
