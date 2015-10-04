@@ -44,6 +44,7 @@ Rails.application.routes.draw do
 
 				scope '', module: :relationship do
 					post 'relationships' => 'relationships#create', as: :user_relationships
+					get 'relationships' => 'relationships#show'
 					delete 'relationships' => 'relationships#destroy'
 
 					get 'follower' => 'follower#index', as: :user_follower

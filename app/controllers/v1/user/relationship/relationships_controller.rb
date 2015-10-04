@@ -30,6 +30,18 @@ class V1::User::Relationship::RelationshipsController < V1::User::Relationship::
 		end
 	end
 
+	def show
+		unless params[:partner_id]
+			render "v1/errors/default",
+			locals: {
+				error: {
+					type: "PARAMETER_MISSING",
+					specific: "partner_id"
+				}
+			}, status: 400 and return
+		end
+	end
+
 	def destroy
 		if @relationship.destroy
 			render nothing: true, status: 204

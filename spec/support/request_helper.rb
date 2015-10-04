@@ -1,5 +1,7 @@
 module RequestHelper
-	def json
+	def json(reload: false)
+		@json = nil if reload
+
 		@json ||= JSON.parse(response.body)
 	end
 
