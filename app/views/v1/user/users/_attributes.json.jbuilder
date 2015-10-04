@@ -1,3 +1,5 @@
+include_following ||= false
+
 json.extract! user, :id, :firstname, :lastname, :username, :follower_count
 
 if current_user == user
@@ -13,6 +15,8 @@ json.profile_image do
 	end
 end
 
-is_follower = user.follower.include?(current_user) if current_user
+if include_following
+	is_follower = user.follower.include?(current_user) if current_user
 
-json.following is_follower
+	json.following is_follower
+end

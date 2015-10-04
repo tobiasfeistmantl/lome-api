@@ -1,6 +1,6 @@
 RSpec::Matchers.define :include_non_private_user_attributes do |expected|
 	match do |actual|
-		expect(actual).to include("id", "firstname", "lastname", "username", "follower_count", "following")
+		expect(actual).to include("id", "firstname", "lastname", "username", "follower_count")
 
 		["username", "follower_count"].each do |key|
 			expect(actual[key]).to_not be_nil

@@ -21,6 +21,7 @@ RSpec.describe "User Resource", type: :request do
 
 			expect(response).to have_http_status(200)
 			expect(json[0]).to include_non_private_user_attributes
+			expect(json[0]).to_not include("following")
 			expect(json[0]["id"]).to eq(random_user.id)
 		end
 	end
@@ -58,6 +59,7 @@ RSpec.describe "User Resource", type: :request do
 			expect(response).to have_http_status(200)
 			expect(json).to include_non_private_user_attributes
 			expect(json).to include_private_user_attributes
+			expect(json).to include("following")
 			expect(json["id"]).to eq(user.id)
 		end
 
@@ -68,6 +70,7 @@ RSpec.describe "User Resource", type: :request do
 
 			expect(response).to have_http_status(200)
 			expect(json).to include_non_private_user_attributes
+			expect(json).to include("following")
 			expect(json).not_to include_private_user_attributes
 		end
 	end
