@@ -1,3 +1,6 @@
+# @author Tobias Feistmantl
+#
+# The Post model
 class Post < ActiveRecord::Base
 	before_validation :set_message_to_nil_unless_present
 
@@ -23,11 +26,28 @@ class Post < ActiveRecord::Base
 
 	scope :newest, -> { order(created_at: :desc) }
 
+	# Checks if the post
+	# was liked by the user.
+	#
+	# @param user [User]
+	#    The user who should be tested.
+	#
+	# @return [Boolean]
+	#    True if the user likes the post.
 	def liked_by?(user)
 		likers.include?(user)
 	end
 
-	protected
+	# Checks if the post
+	# was reported.
+	#
+	# @return [Boolean]
+	#    True if the post was reported.
+	def reported?
+		abuse_reports.any?
+	end
+
+	private
 
 	def set_message_to_nil_unless_present
 		unless message.present?

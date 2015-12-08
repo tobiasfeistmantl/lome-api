@@ -62,4 +62,24 @@ RSpec.describe Post, type: :model do
 			expect(post.liked_by?(another_user)).to be false
 		end
 	end
+
+	context '#reported?' do
+		context 'not reported' do
+			it 'returns false' do
+				expect(subject.reported?).to be false
+			end
+		end
+
+		context 'reported' do
+			before do
+				subject.save
+				create :post_abuse_report, post: subject
+				subject.reload
+			end
+
+			it 'returns true' do
+				expect(subject.reported?).to be true
+			end
+		end
+	end
 end
