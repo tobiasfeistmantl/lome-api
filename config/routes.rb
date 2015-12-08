@@ -37,6 +37,8 @@ Rails.application.routes.draw do
 
 						put 'image' => 'image#update', as: :user_post_image
 						patch 'image' => 'image#update'
+
+						post 'abuse_report' => 'abuse_reports#create', as: :user_post_abuse_report
 					end
 
 					post 'image' => 'image#create', as: :user_post_with_image
