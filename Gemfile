@@ -11,6 +11,7 @@ group :development, :test do
 	gem 'shoulda-matchers'
 	gem 'database_cleaner'
 	gem 'rb-fsevent'
+	gem 'rails-erd'
 end
 
 group :production do
