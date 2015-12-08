@@ -8,6 +8,7 @@ RSpec.describe Post, type: :model do
 	it { is_expected.to belong_to(:author).class_name('User') }
 	it { is_expected.to have_many(:likes).dependent(:destroy) }
 	it { is_expected.to have_many(:likers).through(:likes).source(:user) }
+	it { is_expected.to have_many(:abuse_reports).class_name('PostAbuseReport') }
 
 	it { is_expected.to validate_presence_of(:latitude) }
 	it { is_expected.to validate_presence_of(:longitude) }

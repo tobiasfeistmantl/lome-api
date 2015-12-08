@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
 	has_many :likes, dependent: :destroy
 	has_many :liked_posts, through: :likes, source: :post
 
+	has_many :post_abuse_reports, foreign_key: :reporter_id
+
 	validates :firstname, length: { maximum: 15 }
 	validates :firstname, presence: {
 		message: I18n.t('activerecord.errors.messages.cannot_be_blank_if_attribute_set',attribute: User.human_attribute_name("lastname")) 

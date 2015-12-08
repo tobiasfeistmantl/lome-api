@@ -37,6 +37,8 @@ RSpec.describe User, type: :model do
 	it { is_expected.to have_many(:likes).dependent(:destroy) }
 	it { is_expected.to have_many(:liked_posts) }
 
+	it { is_expected.to have_many(:post_abuse_reports).with_foreign_key(:reporter_id) }
+
 
 	describe "validates presence of firstname if lastname is present" do
 		before { allow(subject).to receive(:lastname?) { true } }

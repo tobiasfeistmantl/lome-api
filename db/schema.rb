@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151005185344) do
+ActiveRecord::Schema.define(version: 20151208100114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,16 @@ ActiveRecord::Schema.define(version: 20151005185344) do
   add_index "likes", ["post_id", "user_id"], name: "index_likes_on_post_id_and_user_id", unique: true, using: :btree
   add_index "likes", ["post_id"], name: "index_likes_on_post_id", using: :btree
   add_index "likes", ["user_id"], name: "index_likes_on_user_id", using: :btree
+
+  create_table "post_abuse_reports", force: :cascade do |t|
+    t.integer  "reporter_id"
+    t.integer  "post_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "post_abuse_reports", ["post_id"], name: "index_post_abuse_reports_on_post_id", using: :btree
+  add_index "post_abuse_reports", ["reporter_id"], name: "index_post_abuse_reports_on_reporter_id", using: :btree
 
   create_table "posts", force: :cascade do |t|
     t.text     "message"
@@ -152,6 +162,8 @@ ActiveRecord::Schema.define(version: 20151005185344) do
 
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
+  add_foreign_key "post_abuse_reports", "posts"
+  add_foreign_key "post_abuse_reports", "users", column: "reporter_id"
   add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "relationships", "users", column: "followed_id"
   add_foreign_key "relationships", "users", column: "follower_id"
