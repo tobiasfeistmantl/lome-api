@@ -21,7 +21,6 @@ group :production do
 end
 
 gem 'rails', '4.2.4'
-gem 'rails-api'
 gem 'jbuilder'
 gem 'bcrypt', '~> 3.1.7'
 gem 'pg'
