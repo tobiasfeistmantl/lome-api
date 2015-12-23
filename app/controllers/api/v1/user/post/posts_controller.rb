@@ -1,6 +1,6 @@
 class Api::V1::User::Post::PostsController < Api::V1::User::Post::Base
 	skip_before_action :set_post, only: [:index, :create]
-	skip_before_action :authorize_user!, only: [:index, :show]
+	skip_before_action :authorize!, only: [:index, :show]
 
 	def index
 		@posts = @user.posts.newest.paginate(page: params[:page])

@@ -1,8 +1,8 @@
 include ActionController::HttpAuthentication::Basic
 
 class Api::V1::User::Session::SessionsController < Api::V1::User::Session::Base
-	skip_before_action :set_user, :authenticate_user!, :authorize_user!, only: [:create]
-	before_action :authenticate_user_with_basic!, only: [:create]
+	skip_before_action :set_user, :authenticate!, :authorize!, only: [:create]
+	before_action only: [:create] { authenticate!(:authenticated_with_basic?) }
 	before_action :set_user_session, only: [:destroy]
 
 	def create
@@ -39,35 +39,13 @@ class Api::V1::User::Session::SessionsController < Api::V1::User::Session::Base
 		end
 	end
 
-	protected
+	private
 
-	def authenticate_user_with_basic!
+	def authenticated_with_basic?
 		if request.authorization
 			username, password = user_name_and_password(request)
-
 			@user = ::User.find_by(username: username)
-
-			unless @user && @user.authenticate(password)
-				render "api/v1/errors/default",
-				locals: {
-					error: {
-						type: "INVALID_CREDENTIALS",
-						message: {
-							user: "Username or password is invalid"
-						}
-					}
-				}, status: 401 and return
-			end
-		else
-			render "api/v1/errors/default",
-			locals: {
-				error: {
-					type: "MISSING_CREDENTIALS",
-					message: {
-						user: "Username or password not provided"
-					}
-				}
-			}, status: 401 and return
+			return true if @user && @user.authenticate(password)
 		end
 	end
 end

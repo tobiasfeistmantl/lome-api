@@ -1,8 +1,8 @@
 class Api::V1::User::Base < Api::V1::Base
 	before_action :set_user
-	before_action :authorize_user!
+	before_action :authorize!
 
-	protected
+	private
 
 	def set_user
 		@user = ::User.find(params[:user_id] || params[:id])
@@ -18,17 +18,7 @@ class Api::V1::User::Base < Api::V1::Base
 		}, status: 404
 	end
 
-	def authorize_user!
-		unless @user == current_user
-			render 'api/v1/errors/default',
-			locals: {
-				error: {
-					type: "FORBIDDEN",
-					message: {
-						user: "You are not allowed to do this action"
-					}
-				}
-			}, status: 403 and return
-		end
+	def authorized?
+		return true if @user == current_user
 	end
 end

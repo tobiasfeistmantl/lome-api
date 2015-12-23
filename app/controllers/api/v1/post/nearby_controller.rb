@@ -14,4 +14,10 @@ class Api::V1::Post::NearbyController < Api::V1::Post::Base
 			}, status: 400
 		end
 	end
+
+	private
+
+	def authorized?
+		true
+	end
 end

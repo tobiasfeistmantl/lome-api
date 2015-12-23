@@ -1,5 +1,5 @@
 class Api::V1::User::Post::LikesController < Api::V1::User::Post::Base
-	skip_before_action :authorize_user!
+	skip_before_action :authorize!
 
 	def index
 		@likes = @post.likes.includes(:user).paginate(page: params[:page])

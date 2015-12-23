@@ -1,5 +1,5 @@
 class Api::V1::User::Post::AbuseReportsController < Api::V1::User::Post::Base
-	skip_before_action :authorize_user!, only: :create
+	skip_before_action :authorize!, only: :create
 
 	# Create
 	def create

@@ -1,7 +1,7 @@
 class Api::V1::User::UsersController < Api::V1::User::Base
 	skip_before_action :set_user, only: [:index, :create]
-	skip_before_action :authenticate_user!, only: [:create]
-	skip_before_action :authorize_user!, only: [:index, :show, :create]
+	skip_before_action :authenticate!, only: [:create]
+	skip_before_action :authorize!, only: [:index, :show, :create]
 
 	def index
 		@users = ::User.search_by_username(params[:q]).paginate(page: params[:page])
