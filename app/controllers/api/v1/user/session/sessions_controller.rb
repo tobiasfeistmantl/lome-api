@@ -9,6 +9,7 @@ class Api::V1::User::Session::SessionsController < Api::V1::User::Session::Base
 		@user_session = @user.sessions.new
 
 		if @user_session.save
+			@current_user_session = @user_session  # Is used in the current_user_session method
 			render 'create', status: 201, location: api_v1_user_session_url(@user, @user_session)
 		else
 			render "api/v1/errors/default",

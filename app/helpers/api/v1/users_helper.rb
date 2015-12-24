@@ -4,7 +4,7 @@ include ActiveSupport::SecurityUtils
 
 module Api::V1::UsersHelper
 	def current_user
-		@current_user ||= current_user_session.user if current_user_session
+		@current_user ||= (current_user_session.user if current_user_session)
 	end
 
 	def current_user_session

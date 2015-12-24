@@ -11,6 +11,7 @@ class Api::V1::User::UsersController < Api::V1::User::Base
 		@user = ::User.new user_create_params
 
 		if @user.save
+			@current_user = @user  # Is used in the current_user method
 			render "create", status: 201, location: api_v1_user_url(@user)
 		else
 			render "api/v1/errors/default",

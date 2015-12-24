@@ -69,7 +69,7 @@ class Api::V1::User::Post::PostsController < Api::V1::User::Post::Base
 	end
 
 	def authorized?
-		return true if update_action? || destroy_action?
+		return true if (update_action? || destroy_action?) && current_user.moderator?
 
 		super
 	end
