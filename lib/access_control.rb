@@ -6,7 +6,7 @@ module AccessControl
 		begin
 			send(auth_method)
 		rescue NoMethodError
-			AccessControl::AuthenticationNotPerformedError
+			raise AccessControl::AuthenticationNotPerformedError
 		end
 
 		return if send(auth_method) == true

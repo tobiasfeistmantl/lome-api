@@ -13,6 +13,13 @@
 			<ul class="nav navbar-nav">
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
+				<% if admin_signed_in? %>
+					<li>
+						<%= link_to admin_session_path, method: :delete do %>
+							<span class="glyphicon glyphicon-log-out"></span>
+						<% end %>
+					</li>
+				<% end %>
 			</ul>
 		</div><!--/.nav-collapse -->
 	</div>

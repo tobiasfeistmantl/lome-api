@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+	namespace :admin do
+		resource :session, only: [:new, :create, :destroy]
+		get 'dashboard' => 'dashboard#show'
+	end
+
 	namespace :api, path: nil do
 		namespace :v1, defaults: { format: :json } do
 			scope :users, module: :user do

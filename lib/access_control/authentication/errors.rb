@@ -13,7 +13,7 @@ module AccessControl
 	# @raise [AuthenticationNotPerformed]
 	#    if the #authenticated? isn't defined
 	#    in the controller class.
-	class AuthenticationNotPerformed < AuthenticationError
+	class AuthenticationNotPerformedError < AuthenticationError
 	end
 
 	# Error if user is unauthenticated.
