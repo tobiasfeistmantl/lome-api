@@ -39,6 +39,8 @@ RSpec.describe User, type: :model do
 
 	it { is_expected.to have_many(:post_abuse_reports).with_foreign_key(:reporter_id) }
 
+	it { is_expected.to define_enum_for(:role).with([:user, :moderator, :admin]) }
+
 
 	describe "validates presence of firstname if lastname is present" do
 		before { allow(subject).to receive(:lastname?) { true } }

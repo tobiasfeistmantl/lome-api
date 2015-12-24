@@ -45,6 +45,8 @@ class User < ActiveRecord::Base
 	validates :password, length: { minimum: 7 }, allow_nil: true
 	validates :email, format: { with: EMAIL_REGEX }, uniqueness: { case_sensitive: false }, if: :email?
 
+	enum role: [:user, :moderator, :admin]
+
 	def name
 		[firstname, lastname].join(" ") if firstname.present? && lastname.present?
 	end

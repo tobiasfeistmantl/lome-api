@@ -12,6 +12,7 @@ group :development, :test do
 	gem 'database_cleaner'
 	gem 'rb-fsevent'
 	gem 'rails-erd'
+	gem 'growl'
 end
 
 group :production do
