@@ -13,6 +13,7 @@ group :development, :test do
 	gem 'rb-fsevent'
 	gem 'rails-erd'
 	gem 'growl'
+	gem 'web-console', '~> 2.0'
 end
 
 group :production do
@@ -24,9 +25,14 @@ end
 gem 'rails', '4.2.4'
 gem 'jbuilder'
 gem 'bcrypt', '~> 3.1.7'
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'jquery-rails'
+gem 'turbolinks'
 gem 'pg'
 gem 'puma'
 gem 'geocoder'
 gem 'will_paginate'
 gem 'carrierwave'
 gem 'mini_magick'
+gem 'bootstrap-sass'
