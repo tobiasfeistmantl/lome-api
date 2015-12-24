@@ -12,4 +12,10 @@ module RequestHelper
 
 		send(method, path, params, headers)
 	end
+
+	[:get, :post, :patch, :put, :destroy].each do |verb|
+		define_method :"#{verb}_with_user_session" do |path, user_session, params={}, headers={}|
+			request_with_user_session verb, path, user_session, params, headers
+		end
+	end
 end

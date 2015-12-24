@@ -67,4 +67,10 @@ class Api::V1::User::Post::PostsController < Api::V1::User::Post::Base
 	def post_params
 		params.require(:post).permit(:message, :image, :latitude, :longitude, :status)
 	end
+
+	def authorized?
+		return true if update_action? || destroy_action?
+
+		super
+	end
 end

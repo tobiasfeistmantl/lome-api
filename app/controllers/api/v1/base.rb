@@ -1,6 +1,6 @@
-include Api::V1::UsersHelper
-
 class Api::V1::Base < ApplicationController
+	include Api::V1::UsersHelper
+
 	protect_from_forgery with: :null_session
 
 	before_action :authenticate!

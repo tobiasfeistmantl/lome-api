@@ -73,6 +73,20 @@ RSpec.describe "User Resource", type: :request do
 			expect(json).to include("following")
 			expect(json).not_to include_private_user_attributes
 		end
+
+		it "returns another user as moderator" do
+			moderator = create(:moderator_user)
+			moderator_session = create(:user_session, user: moderator)
+			
+			other_user = create(:user)
+
+			get_with_user_session "/v1/users/#{other_user.id}", moderator_session
+
+			expect(response).to have_http_status(200)
+			expect(json).to include_non_private_user_attributes
+			expect(json).to include("following")
+			expect(json).to include_private_user_attributes
+		end
 	end
 
 	describe "PATCH /users/:id" do

@@ -2,9 +2,7 @@ include_following ||= false
 
 json.extract! user, :id, :firstname, :lastname, :username, :follower_count
 
-if current_user == user
-	json.email user.email
-end
+json.email user.email if current_user && (current_user == user || current_user.moderator? || current_user.admin?)
 
 json.profile_image do
 	json.aspect_ratio user.profile_image.aspect_ratio
@@ -20,3 +18,5 @@ if include_following
 
 	json.following is_follower
 end
+
+json.role User.roles[user.role] if current_user && (current_user.moderator? || current_user.admin?)

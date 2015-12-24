@@ -19,6 +19,6 @@ class Api::V1::User::Base < Api::V1::Base
 	end
 
 	def authorized?
-		return true if @user == current_user
+		return true if @user == current_user || current_user.admin?
 	end
 end
