@@ -331,6 +331,9 @@ GEM
       coffee-rails
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    uglifier (2.7.2)
+      execjs (>= 0.3.0)
+      json (>= 1.8.0)
     web-console (2.2.1)
       activemodel (>= 4.0)
       binding_of_caller (>= 0.7.2)
@@ -373,6 +376,7 @@ DEPENDENCIES
   simple_form
   spring
   turbolinks
+  uglifier
   web-console (~> 2.0)
   will_paginate
   will_paginate-bootstrap
