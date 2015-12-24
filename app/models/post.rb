@@ -8,7 +8,7 @@ class Post < ActiveRecord::Base
 
 	has_many :likes, dependent: :destroy
 	has_many :likers, through: :likes, source: :user
-	has_many :abuse_reports, class_name: 'PostAbuseReport'
+	has_many :abuse_reports, class_name: 'PostAbuseReport', dependent: :destroy
 
 	default_scope { includes(:likers) }
 	default_scope { includes(:author) }

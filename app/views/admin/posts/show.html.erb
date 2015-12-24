@@ -1,0 +1,35 @@
+<div class="col-md-offset-3 col-md-6">
+	<h4>
+		<%= @post.author.name %><br>
+		<small>Posted <%= time_ago_in_words(@post.created_at) %> ago</small>
+	</h4>
+
+	<p><%= @post.message %></p>
+
+	<% if @post.image.present? %>
+		<%= image_tag @post.image, style: 'width: 100%; margin-bottom: 20px;' %>
+	<% end %>
+
+	<%= link_to "Delete Post", admin_post_path(@post), method: :delete, class: 'btn btn-danger btn-block' %>
+
+	<hr>
+
+	<h3>Reports</h3>
+
+	<ul class="list-group">
+		<% @post.abuse_reports.includes(:reporter).each do |report| %>
+			<li class="list-group-item">
+				<strong><%= report.reporter.name %></strong><br>
+				<small>Reported <%= time_ago_in_words(report.created_at) %> ago</small>
+
+				<div>
+					<%= link_to 'Delete Abuse Report', admin_post_abuse_report_path(report), method: :delete %>
+				</div>
+			</li>
+		<% end %>
+
+		<% if @post.abuse_reports.blank? %>
+			Not reported yet
+		<% end %>
+	</ul>
+</div>

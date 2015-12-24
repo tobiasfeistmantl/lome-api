@@ -2,6 +2,9 @@ Rails.application.routes.draw do
 	namespace :admin do
 		resource :session, only: [:new, :create, :destroy]
 		get 'dashboard' => 'dashboard#show'
+
+		resources :posts, only: [:show, :destroy]
+		resources :post_abuse_reports, only: [:destroy]
 	end
 
 	namespace :api, path: nil do

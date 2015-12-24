@@ -1,3 +1,35 @@
 <div class="page-header">
 	<h1>Dashboard</h1>
 </div>
+
+<div>
+	<h2>Post Abuse Reports</h2>
+
+	<div class="table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Author</th>
+					<th>Content</th>
+					<th>Posted at</th>
+					<th>Reported by</th>
+					<th colspan="2"></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<% @post_abuse_reports.each do |report| %>
+					<tr>
+						<td><%= report.post.author.name %></td>
+						<td><%= truncate(report.post.message) %></td>
+						<td><%= report.post.created_at %></td>
+						<td><%= report.reporter.name %></td>
+						<td><%= link_to "Show", admin_post_path(report.post) %></td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<%= will_paginate @post_abuse_reports, renderer: BootstrapPagination::Rails, param_name: :post_abuse_report_page %>
