@@ -22,7 +22,7 @@ group :production do
 	gem 'fog'
 end
 
-gem 'rails', '4.2.4'
+gem 'rails', '5.0.0.1'
 gem 'jbuilder'
 gem 'bcrypt', '~> 3.1.7'
 gem 'sass-rails'
