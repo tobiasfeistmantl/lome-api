@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
 
+group :development do
+	gem 'web-console'
+end
+
 group :development, :test do
 	gem 'spring'
 	gem 'dotenv-rails'
@@ -13,7 +17,6 @@ group :development, :test do
 	gem 'rb-fsevent'
 	gem 'rails-erd'
 	gem 'growl'
-	gem 'web-console', '~> 2.0'
 end
 
 group :production do
