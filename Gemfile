@@ -19,6 +19,10 @@ group :development, :test do
 	gem 'growl'
 end
 
+group :test do
+	gem 'rails-controller-testing'
+end
+
 group :production do
 	gem 'rails_12factor'
 	gem 'newrelic_rpm'
