@@ -1,6 +1,6 @@
 include_following ||= false
 
-json.extract! user, :id, :firstname, :lastname, :username, :follower_count, :posting_privilege
+json.extract! user, :id, :firstname, :lastname, :username, :follower_count, :posting_privilege, :verified
 
 json.email user.email if current_user == user || current_user.moderator? || current_user.admin?
 

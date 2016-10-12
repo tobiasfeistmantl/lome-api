@@ -55,6 +55,10 @@ class User < ActiveRecord::Base
 		firstname.present? || lastname.present?
 	end
 
+	def verified
+		verified_at.present?
+	end
+
 	def self.search_by_username(search_cont)
 		where("username ILIKE ?", "%#{search_cont}%").order(:username)
 	end

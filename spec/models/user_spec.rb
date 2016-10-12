@@ -91,6 +91,24 @@ RSpec.describe User, type: :model do
 		end
 	end
 
+	describe '#verified' do
+		context 'is verified' do
+			subject { create(:user, verified_at: Time.current) }
+
+			it 'returns true' do
+				expect(subject.verified).to be true
+			end
+		end
+
+		context 'not verified' do
+			subject { create(:user) }
+
+			it 'returns false' do
+				expect(subject.verified).to be false
+			end
+		end
+	end
+
 	describe "@email" do
 		let(:user) { build(:user, email: "#{FFaker::Internet.email.upcase} ") }
 		before { user.valid? }
