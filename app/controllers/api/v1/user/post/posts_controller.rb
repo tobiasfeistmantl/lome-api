@@ -46,7 +46,7 @@ class Api::V1::User::Post::PostsController < Api::V1::User::Post::Base
 
 	def destroy
 		if @post.destroy
-			render nothing: true, status: 204
+			head 204
 		else
 			render "api/v1/errors/default",
 			locals: {

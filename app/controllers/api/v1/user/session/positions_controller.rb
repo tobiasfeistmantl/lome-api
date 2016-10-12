@@ -3,7 +3,7 @@ class Api::V1::User::Session::PositionsController < Api::V1::User::Session::Base
 		@position = @user_session.positions.new position_params
 
 		if @position.save
-			render nothing: true, status: 204
+			head 204
 		else
 			render "api/v1/errors/default",
 			locals: {

@@ -26,7 +26,7 @@ class Api::V1::User::Session::SessionsController < Api::V1::User::Session::Base
 
 	def destroy
 		if @user_session.destroy
-			render nothing: true, status: 204
+			head 204
 		else
 			render "api/v1/errors/default",
 			locals: {

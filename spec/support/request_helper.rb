@@ -10,7 +10,7 @@ module RequestHelper
 
 		headers.merge!('Authorization' => "Token token=#{id_and_token}")
 
-		send(method, path, params, headers)
+		send(method, path, { params: params, headers: headers })
 	end
 
 	[:get, :post, :patch, :put, :destroy].each do |verb|

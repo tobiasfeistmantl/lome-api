@@ -6,7 +6,7 @@ RSpec.describe "User Session Resource", type: :request do
 
 	describe "POST /users/sessions" do
 		it "returns a new session" do
-			post "/v1/users/sessions", {}, { "Authorization" => ActionController::HttpAuthentication::Basic.encode_credentials(user.username, user.password) }
+			post "/v1/users/sessions", headers: { "Authorization" => ActionController::HttpAuthentication::Basic.encode_credentials(user.username, user.password) }
 
 			expect(response).to have_http_status(201)
 			expect(json).to include("id", "token")

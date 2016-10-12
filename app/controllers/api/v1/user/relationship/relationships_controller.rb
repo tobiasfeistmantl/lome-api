@@ -4,7 +4,7 @@ class Api::V1::User::Relationship::RelationshipsController < Api::V1::User::Rela
 	def create
 		unless @user.following.find_by(id: params[:relationship][:followed_id])
 			if @relationship = @user.active_relationships.create(relationship_params)
-				render nothing: true, status: 204
+				head 204
 			else
 				render "api/v1/errors/default",
 				locals: {
@@ -44,7 +44,7 @@ class Api::V1::User::Relationship::RelationshipsController < Api::V1::User::Rela
 
 	def destroy
 		if @relationship.destroy
-			render nothing: true, status: 204
+			head 204
 		else
 			render "api/v1/errors/default",
 			locals: {

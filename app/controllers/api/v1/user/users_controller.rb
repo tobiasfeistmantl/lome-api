@@ -47,7 +47,7 @@ class Api::V1::User::UsersController < Api::V1::User::Base
 
 	def destroy
 		if @user.destroy
-			render nothing: true, status: 204
+			head 204
 		else
 			render "api/v1/errors/default",
 			locals: {

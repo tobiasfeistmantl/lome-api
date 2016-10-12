@@ -4,7 +4,7 @@ class Api::V1::User::Post::AbuseReportsController < Api::V1::User::Post::Base
 		@report.reporter = current_user
 
 		if @report.save
-			render nothing: true, status: 201
+			head 201
 		else
 			render "api/v1/errors/default",
 			locals: {

@@ -30,7 +30,7 @@ RSpec.describe "User Resource", type: :request do
 		let(:user) { attributes_for(:user) }
 
 		it "creates a valid user" do
-			post "/v1/users", { user: user }
+			post "/v1/users", params: { user: user }
 
 			expect(response).to have_http_status(201)
 			expect(json).to include_non_private_user_attributes
@@ -41,7 +41,7 @@ RSpec.describe "User Resource", type: :request do
 			let(:user) { attributes_for(:user_with_minimum_data) }
 
 			it "create a valid user" do
-				post "/v1/users", { user: user }
+				post "/v1/users", params: { user: user }
 
 				expect(response).to have_http_status(201)
 				expect(json).to include_non_private_user_attributes
