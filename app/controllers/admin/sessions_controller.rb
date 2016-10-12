@@ -27,12 +27,13 @@ class Admin::SessionsController < Admin::Base
 
 	private
 
-	def authenticated?
-		true
-	end
-
 	def authorized?
-		return true if create_action?
-		return true if destroy_action? && admin_signed_in?
+		if create_action?
+			return true
+		end
+
+		if destroy_action?
+			return true if admin_signed_in?
+		end
 	end
 end

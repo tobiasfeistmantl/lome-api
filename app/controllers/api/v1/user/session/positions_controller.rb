@@ -20,6 +20,12 @@ class Api::V1::User::Session::PositionsController < Api::V1::User::Session::Base
 
 	protected
 
+	def authorized?
+		if create_action?
+			return true if current_user_session == @user_session
+		end
+	end
+
 	def position_params
 		params.require(:position).permit(:latitude, :longitude)
 	end

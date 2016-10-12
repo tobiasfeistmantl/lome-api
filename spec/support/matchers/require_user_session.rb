@@ -1,6 +1,6 @@
 RSpec::Matchers.define :require_user_session do |expected|
 	match do |actual|
-		expect(actual).to have_http_status 401
+		expect(actual).to have_http_status 403
 		expect(actual).to render_default_error_template
 	end
 

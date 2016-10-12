@@ -5,11 +5,9 @@ class Admin::DashboardController < Admin::Base
 
 	private
 
-	def authenticated?
-		return true if admin_signed_in?
-	end
-
 	def authorized?
-		return true if current_admin.moderator? || current_admin.admin?
+		if show_action?
+			return true if admin_signed_in?
+		end
 	end
 end

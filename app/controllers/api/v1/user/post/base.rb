@@ -1,5 +1,6 @@
 class Api::V1::User::Post::Base < Api::V1::User::Base
 	before_action :set_post
+	before_action :authorize!
 
 	protected
 

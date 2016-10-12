@@ -18,6 +18,6 @@ class Api::V1::Post::NearbyController < Api::V1::Post::Base
 	private
 
 	def authorized?
-		true
+		return true if user_signed_in?
 	end
 end

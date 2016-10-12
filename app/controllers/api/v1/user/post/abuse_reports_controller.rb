@@ -1,7 +1,4 @@
 class Api::V1::User::Post::AbuseReportsController < Api::V1::User::Post::Base
-	skip_before_action :authorize!, only: :create
-
-	# Create
 	def create
 		@report = @post.abuse_reports.new
 		@report.reporter = current_user
@@ -19,6 +16,14 @@ class Api::V1::User::Post::AbuseReportsController < Api::V1::User::Post::Base
 					}
 				}
 			}, status: 500
+		end
+	end
+
+	private
+
+	def authorized?
+		if create_action?
+			return true if user_signed_in?
 		end
 	end
 end

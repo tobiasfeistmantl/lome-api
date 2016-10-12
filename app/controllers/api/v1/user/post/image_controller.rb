@@ -41,4 +41,12 @@ class Api::V1::User::Post::ImageController < Api::V1::User::Post::Base
 			}, status: 400
 		end
 	end
+
+	private
+
+	def authorized?
+		if write_action?
+			return true if current_user == @user || (current_user && (current_user.moderator? || current_user.admin?))
+		end
+	end
 end

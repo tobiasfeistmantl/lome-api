@@ -2,6 +2,8 @@ GEM
   remote: https://rubygems.org/
   specs:
     CFPropertyList (2.3.3)
+    action_control (0.1)
+      rails (>= 4.0.0)
     actioncable (5.0.0.1)
       actionpack (= 5.0.0.1)
       nio4r (~> 1.2)
@@ -391,6 +393,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  action_control
   bcrypt (~> 3.1.7)
   bootstrap-sass
   carrierwave

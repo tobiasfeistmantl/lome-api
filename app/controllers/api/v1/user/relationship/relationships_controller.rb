@@ -61,6 +61,16 @@ class Api::V1::User::Relationship::RelationshipsController < Api::V1::User::Rela
 
 	protected
 
+	def authorized?
+		if create_action?
+			return true if current_user == @user
+		end
+
+		if read_action? || destroy_action?
+			return true if current_user == @user || (current_user && current_user.admin?)
+		end
+	end
+
 	def relationship_params
 		params.require(:relationship).permit(:followed_id)
 	end

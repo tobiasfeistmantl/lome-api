@@ -1,5 +1,6 @@
 class Api::V1::User::Session::Base < Api::V1::User::Base
 	before_action :set_user_session
+	before_action :authorize!
 
 	protected
 

@@ -1,26 +1,11 @@
 class Api::V1::User::Post::PostsController < Api::V1::User::Post::Base
 	skip_before_action :set_post, only: [:index, :create]
-	skip_before_action :authorize!, only: [:index, :show]
 
 	def index
 		@posts = @user.posts.newest.paginate(page: params[:page])
 	end
 
 	def create
-		unless @user.posting_privilege || @user.moderator? || @user.admin?
-			render "api/v1/errors/default",
-			locals: {
-				error: {
-					type: "NO_POSTING_PRIVILEGE",
-					message: {
-						user: "You don't have the privilege to post something."
-					}
-				}
-			}, status: 403
-
-			return
-		end
-
 		@post = @user.posts.new post_params
 
 		if @post.save
@@ -83,8 +68,16 @@ class Api::V1::User::Post::PostsController < Api::V1::User::Post::Base
 	end
 
 	def authorized?
-		return true if (update_action? || destroy_action?) && current_user.moderator?
+		if read_action?
+			return true if user_signed_in?
+		end
 
-		super
+		if write_action?
+			return true if (current_user == @user && current_user.posting_privilege) || (current_user && current_user.admin?)
+		end
+
+		if update_action? || destroy_action?
+			return true if current_user && current_user.moderator?
+		end
 	end
 end

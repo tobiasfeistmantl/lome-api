@@ -1,9 +1,9 @@
 include ActionController::HttpAuthentication::Basic
 
 class Api::V1::User::Session::SessionsController < Api::V1::User::Session::Base
-	skip_before_action :set_user, :authenticate!, :authorize!, only: [:create]
-	before_action only: [:create] { authenticate!(:authenticated_with_basic?) }
+	skip_before_action :set_user, only: [:create]
 	before_action :set_user_session, only: [:destroy]
+	before_action :authorize!
 
 	def create
 		@user_session = @user.sessions.new
@@ -42,11 +42,17 @@ class Api::V1::User::Session::SessionsController < Api::V1::User::Session::Base
 
 	private
 
-	def authenticated_with_basic?
-		if request.authorization
-			username, password = user_name_and_password(request)
-			@user = ::User.find_by(username: username)
-			return true if @user && @user.authenticate(password)
+	def authorized?
+		if create_action?
+			if request.authorization
+				username, password = user_name_and_password(request)
+				@user = ::User.find_by(username: username)
+				return true if @user && @user.authenticate(password)
+			end
+		end
+
+		if destroy_action?
+			return true if @user == current_user
 		end
 	end
 end

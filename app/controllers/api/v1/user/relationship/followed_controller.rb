@@ -1,8 +1,14 @@
 class Api::V1::User::Relationship::FollowedController < Api::V1::User::Relationship::Base
-	skip_before_action :authorize!, only: [:index]
-
 	def index
 		@followed_users = @user.following.paginate(page: params[:page])
 		@count = @user.following.count
+	end
+
+	private
+
+	def authorized?
+		if read_action?
+			return true if user_signed_in?
+		end
 	end
 end

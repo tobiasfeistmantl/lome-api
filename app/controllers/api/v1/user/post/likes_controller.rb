@@ -1,6 +1,4 @@
 class Api::V1::User::Post::LikesController < Api::V1::User::Post::Base
-	skip_before_action :authorize!
-
 	def index
 		@likes = @post.likes.includes(:user).paginate(page: params[:page])
 		@count = @post.likes.count
@@ -61,6 +59,14 @@ class Api::V1::User::Post::LikesController < Api::V1::User::Post::Base
 					}
 				}
 			}, status: 404
+		end
+	end
+
+	private
+
+	def authorized?
+		if read_action? || write_action?
+			return true if user_signed_in?
 		end
 	end
 end

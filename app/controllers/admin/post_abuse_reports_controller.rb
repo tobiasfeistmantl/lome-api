@@ -20,11 +20,9 @@ class Admin::PostAbuseReportsController < Admin::Base
 		redirect_back
 	end
 
-	def authenticated?
-		return true if admin_signed_in?
-	end
-
 	def authorized?
-		return true if current_admin.moderator? || current_admin.admin?
+		if destroy_action?
+			return true if admin_signed_in?
+		end
 	end
 end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "User Post Resource", type: :request do
-	let(:user) { create(:user) }
+	let(:user) { create(:user, posting_privilege: true) }
 	let(:user_session) { create(:user_session) }
 
 	describe "GET /users/:user_id/posts" do
@@ -24,6 +24,10 @@ RSpec.describe "User Post Resource", type: :request do
 
 	describe "POST /users/:user_id/posts" do
 		let(:user) { user_session.user }
+
+		before do
+			user.update(posting_privilege: true)
+		end
 
 		it "creates a new drafted post" do
 			request_with_user_session :post, "/v1/users/#{user.id}/posts", user_session, post: attributes_for(:drafted_post)

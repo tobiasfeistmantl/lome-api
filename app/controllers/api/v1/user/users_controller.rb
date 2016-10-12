@@ -1,7 +1,5 @@
 class Api::V1::User::UsersController < Api::V1::User::Base
 	skip_before_action :set_user, only: [:index, :create]
-	skip_before_action :authenticate!, only: [:create]
-	skip_before_action :authorize!, only: [:index, :show, :create]
 
 	def index
 		@users = ::User.search_by_username(params[:q]).paginate(page: params[:page])
@@ -65,6 +63,20 @@ class Api::V1::User::UsersController < Api::V1::User::Base
 	end
 
 	private
+
+	def authorized?
+		if read_action?
+			return true if user_signed_in?
+		end
+
+		if create_action?
+			return true unless user_signed_in?
+		end
+
+		if update_action? || destroy_action?
+			return true if @user == current_user || (current_user && current_user.admin?)
+		end
+	end
 
 	def user_create_params
 		params.require(:user).permit(:firstname, :lastname, :username, :password, :email, :profile_image)
