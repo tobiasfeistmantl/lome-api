@@ -7,6 +7,20 @@ class Api::V1::User::Post::PostsController < Api::V1::User::Post::Base
 	end
 
 	def create
+		unless @user.posting_privilege || @user.moderator? || @user.admin?
+			render "api/v1/errors/default",
+			locals: {
+				error: {
+					type: "NO_POSTING_PRIVILEGE",
+					message: {
+						user: "You don't have the privilege to post something."
+					}
+				}
+			}, status: 403
+
+			return
+		end
+
 		@post = @user.posts.new post_params
 
 		if @post.save
